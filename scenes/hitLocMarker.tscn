@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://om1kcff56bnd"]
+
+[ext_resource type="Script" path="res://scenes/hit_loc_marker.gd" id="1_rxsmx"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_xcn2s"]
+radius = 0.05
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4l0nh"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_xcn2s")
+surface_material_override/0 = SubResource("StandardMaterial3D_4l0nh")
+script = ExtResource("1_rxsmx")
+lifetime = 1.0
