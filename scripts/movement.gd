@@ -1,7 +1,7 @@
 extends Node3D
 
-@export var speed := 5
-@export var jump_speed := 5
+@export var speed := 20
+@export var jump_speed := 15
 var velocity : Vector3 = Vector3()
 var player : CharacterBody3D 
 var camera: Camera3D

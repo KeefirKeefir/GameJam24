@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2wxkh4unf0p5"]
+
+[ext_resource type="ArrayMesh" uid="uid://ckeppks65r6j7" path="res://assets/gcDrone.obj" id="1_07wcl"]
+[ext_resource type="Texture2D" uid="uid://p5yuqqub3yfu" path="res://assets/camGrid2.png" id="2_5eun7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_014qo"]
+albedo_texture = ExtResource("2_5eun7")
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.292516, -6.28411, 0.329124)
+mesh = ExtResource("1_07wcl")
+surface_material_override/0 = SubResource("StandardMaterial3D_014qo")
