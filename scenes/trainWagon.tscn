@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ri1dx1x6702"]
+
+[ext_resource type="ArrayMesh" uid="uid://cm0l8tawq36oo" path="res://assets/trainParts/gcTrainWagon.obj" id="1_csf5e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2o83s"]
+albedo_color = Color(0.423529, 0.427451, 0.439216, 1)
+metallic = 0.5
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+mesh = ExtResource("1_csf5e")
+surface_material_override/0 = SubResource("StandardMaterial3D_2o83s")

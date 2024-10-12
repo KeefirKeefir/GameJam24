@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://4rqva555ov36"
+path="res://.godot/imported/gcWindow.obj-0a88dd6b7efa47727ce29145ccf143b1.mesh"
+
+[deps]
+
+files=["res://.godot/imported/gcWindow.obj-0a88dd6b7efa47727ce29145ccf143b1.mesh"]
+
+source_file="res://assets/trainParts/gcWindow.obj"
+dest_files=["res://.godot/imported/gcWindow.obj-0a88dd6b7efa47727ce29145ccf143b1.mesh", "res://.godot/imported/gcWindow.obj-0a88dd6b7efa47727ce29145ccf143b1.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
