@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bfc4434tj4suk"
+path="res://.godot/imported/gcCamDrone.obj-7ac6d20a5c263818b02f037b425dab2d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/gcCamDrone.obj-7ac6d20a5c263818b02f037b425dab2d.mesh"]
+
+source_file="res://assets/gcCamDrone.obj"
+dest_files=["res://.godot/imported/gcCamDrone.obj-7ac6d20a5c263818b02f037b425dab2d.mesh", "res://.godot/imported/gcCamDrone.obj-7ac6d20a5c263818b02f037b425dab2d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

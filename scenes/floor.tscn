@@ -1,32 +1,32 @@
-[gd_scene load_steps=7 format=3 uid="uid://7gjhg8avnvpg"]
+[gd_scene load_steps=6 format=3 uid="uid://7gjhg8avnvpg"]
 
 [ext_resource type="PackedScene" uid="uid://ddn3gi1k5ock8" path="res://scenes/player.tscn" id="1_y876f"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wgbob"]
+[sub_resource type="NavigationMesh" id="NavigationMesh_ksqsi"]
+vertices = PackedVector3Array(-9.5, 2.5, -9.5, -9.5, 2.5, 9.5, 9.5, 2.5, 9.5, 9.5, 2.5, -9.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+cell_height = 1.0
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_djow7"]
 sky_top_color = Color(0.6, 0.6, 0.6, 1)
-sky_horizon_color = Color(0.797067, 0.804925, 0.772999, 1)
+sky_horizon_color = Color(0.797066, 0.804925, 0.772999, 1)
 ground_bottom_color = Color(0.588266, 0.6197, 0.491997, 1)
-ground_horizon_color = Color(0.797067, 0.804925, 0.772999, 1)
+ground_horizon_color = Color(0.797066, 0.804925, 0.772999, 1)
 
-[sub_resource type="Sky" id="Sky_t1o8l"]
-sky_material = SubResource("ProceduralSkyMaterial_wgbob")
+[sub_resource type="Sky" id="Sky_87mim"]
+sky_material = SubResource("ProceduralSkyMaterial_djow7")
 
-[sub_resource type="Environment" id="Environment_lkbsg"]
+[sub_resource type="Environment" id="Environment_ejyda"]
 background_mode = 2
-sky = SubResource("Sky_t1o8l")
+sky = SubResource("Sky_87mim")
 glow_enabled = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_secuh"]
-size = Vector3(20, 1, 20)
-
-[sub_resource type="BoxMesh" id="BoxMesh_8i8i8"]
-size = Vector3(20, 1, 20)
-
-[node name="StaticBody3D" type="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+[node name="NavigationRegion3D" type="NavigationRegion3D"]
+top_level = true
+navigation_mesh = SubResource("NavigationMesh_ksqsi")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_lkbsg")
+environment = SubResource("Environment_ejyda")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
@@ -35,12 +35,9 @@ light_energy = 1.6
 shadow_enabled = true
 directional_shadow_max_distance = 200.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_secuh")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-mesh = SubResource("BoxMesh_8i8i8")
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(20, 1, 20)
 
 [node name="Player" parent="." instance=ExtResource("1_y876f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15682, 0)
