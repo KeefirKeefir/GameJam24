@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://ddn3gi1k5ock8"]
+[gd_scene load_steps=9 format=3 uid="uid://ddn3gi1k5ock8"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_wxbg3"]
 [ext_resource type="PackedScene" uid="uid://dpk8kg8331frq" path="res://assets/blasterA.glb" id="2_10p0m"]
 [ext_resource type="Script" path="res://scripts/camera_control.gd" id="2_bbeqo"]
+[ext_resource type="Script" path="res://scenes/navigation.gd" id="3_0on3f"]
 [ext_resource type="Script" path="res://scripts/movement.gd" id="4_vms48"]
+[ext_resource type="PackedScene" uid="uid://bkwu42a4cxmea" path="res://scenes/gunstetstscn.tscn" id="5_pesc3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_psx23"]
 
@@ -34,3 +36,12 @@ mesh = SubResource("PlaceholderMesh_1b80v")
 
 [node name="blasterA2" parent="TwistPivot/PitchPivot/CameraController/Camera3D/MeshInstance3D" instance=ExtResource("2_10p0m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.25, -0.5)
+visible = false
+
+[node name="MeshInstance3D2" parent="TwistPivot/PitchPivot/CameraController/Camera3D/MeshInstance3D" instance=ExtResource("5_pesc3")]
+transform = Transform3D(-2.18557e-09, 0, 0.05, 0.00809397, 0.0493405, 3.53799e-10, -0.0493405, 0.00809397, -2.15674e-09, 0.411226, -0.244954, -0.693282)
+skeleton = NodePath("../..")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+debug_enabled = true
+script = ExtResource("3_0on3f")

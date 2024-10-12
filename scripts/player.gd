@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-var gravity := 9.8  # Default gravity value
+var gravity := 40  # Default gravity value
 
 func _ready():
 	gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
