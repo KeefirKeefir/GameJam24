@@ -26,3 +26,7 @@ func _physics_process(delta:float):
 
 func get_input():
 	return Input.get_vector("left", "right", "forward", "back")
+
+
+# Maximum distance for the hitscan
+var max_distance = 1000.0
