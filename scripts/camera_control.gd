@@ -12,7 +12,7 @@ var pitch_input := 0.0
 @onready var camera := $PitchPivot/CameraController/Camera3D  # Reference to the camera (child of pitch pivot)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# Check for mouse mode toggle
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
