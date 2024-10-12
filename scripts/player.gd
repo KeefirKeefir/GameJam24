@@ -1,6 +1,37 @@
 extends CharacterBody3D
 
 var gravity := 40  # Default gravity value
+@export var pistol = {
+	dmg = 10,
+	range = 10000,
+	isShotgun = false, 
+	ammo = 12, 
+	reload = 5.0,
+	downtime = 0.5
+}
+@export var shotgun = {
+	dmg = 3,
+	range = 1000,
+	isShotgun = true, 
+	ammo = 3, 
+	reload = 6.0,
+	downtime = 1.5
+}
+
+enum guns {pistol, shotgun}
+
+var gun = guns.shotgun
+#dmg i
+#range i
+#isshotgun i
+#ammo i
+#reloadtime flt
+#firerate flt
+#sound
+#anim
+#enumWeapons index
+
+
 
 func _ready():
 	gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -34,8 +65,15 @@ func get_input():
 
 func _input(event):
 	if event.is_action_pressed("shoot"):
-		camNode.getCameraCollision(2000, 10, 0)
-		#camNode.cameragetCameraCollision(0, 0, 0)
+		var igun = gun
+		if igun == guns.pistol:
+			camNode.getCameraCollision(pistol.range, pistol.dmg , 0)
+			#sound and anim
+		elif igun == guns.shotgun:
+			for n in range(8):
+				var spread = Vector2(randf_range(-120, 120), randf_range(-120, 120))
+				camNode.getCameraCollision(shotgun.range, shotgun.dmg, spread)
+		
 
 func takeDmg(collider):
 	print("ouch")
