@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://bkwu42a4cxmea"]
+
+[ext_resource type="ArrayMesh" uid="uid://c20vteratwg3b" path="res://assets/gcpistol.obj" id="1_2ht0s"]
+[ext_resource type="Texture2D" uid="uid://61qf45jjho8u" path="res://assets/gungrid3.png" id="2_hw8ey"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6pu7b"]
+albedo_texture = ExtResource("2_hw8ey")
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+mesh = ExtResource("1_2ht0s")
+surface_material_override/0 = SubResource("StandardMaterial3D_6pu7b")
