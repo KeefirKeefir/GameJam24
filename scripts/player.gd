@@ -8,7 +8,6 @@ func _ready():
 	movement_node.player = self
 
 @onready var movement_node := $Movement
-@onready var camera := $TwistPivot/PitchPivot/CameraController/Camera3D
 
 func _physics_process(delta:float):
 	var input_vector = Input.get_vector("left", "right", "forward", "back")
