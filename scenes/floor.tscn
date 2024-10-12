@@ -21,9 +21,14 @@ background_mode = 2
 sky = SubResource("Sky_87mim")
 glow_enabled = true
 
-[node name="NavigationRegion3D" type="NavigationRegion3D"]
-top_level = true
-navigation_mesh = SubResource("NavigationMesh_ksqsi")
+[sub_resource type="BoxShape3D" id="BoxShape3D_secuh"]
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8i8i8"]
+size = Vector3(1000, 1, 20)
+
+[node name="StaticBody3D" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ejyda")
@@ -40,4 +45,3 @@ use_collision = true
 size = Vector3(20, 1, 20)
 
 [node name="Player" parent="." instance=ExtResource("1_y876f")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15682, 0)

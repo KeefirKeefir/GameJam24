@@ -10,7 +10,7 @@ func _ready():
 @onready var movement_node := $Movement
 
 func _physics_process(delta:float):
-	var input_vector = Input.get_vector("left", "right", "forward", "back")
+	var input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
 	# Apply movement and gravity through Movement node
 	movement_node.apply_gravity(gravity, delta)
