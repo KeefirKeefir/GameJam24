@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://dnuy38dexycmt"]
+
+[ext_resource type="ArrayMesh" uid="uid://bfc4434tj4suk" path="res://assets/gcCamDrone.obj" id="1_56xrx"]
+[ext_resource type="Script" path="res://scenes/cam_corpse.gd" id="1_awben"]
+[ext_resource type="Texture2D" uid="uid://p5yuqqub3yfu" path="res://assets/camGrid2.png" id="2_cm2ie"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1vqpu"]
+albedo_color = Color(0.370364, 0.370364, 0.370364, 1)
+albedo_texture = ExtResource("2_cm2ie")
+metallic = 0.45
+metallic_specular = 0.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_t3btp"]
+
+[node name="RigidBody3D" type="RigidBody3D"]
+center_of_mass_mode = 1
+script = ExtResource("1_awben")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.47, 0, -4.10887e-08, 0, 0.47, 0, 4.10887e-08, 0, -0.47, 0.85, 1.422, 0)
+mesh = ExtResource("1_56xrx")
+surface_material_override/0 = SubResource("StandardMaterial3D_1vqpu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.705, 0, 0, 0, 1.705, 0, 0, 0, 1.705, 0.741777, 0.54994, 0)
+shape = SubResource("SphereShape3D_t3btp")

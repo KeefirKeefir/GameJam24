@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://cxrh5xq5sjl6b"]
+[gd_scene load_steps=4 format=3 uid="uid://cxrh5xq5sjl6b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xccgs"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4qbt"]
 bg_color = Color(0.633778, 0.0232757, 0.0487958, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xoy8v"]
+bg_color = Color(0.215343, 0.915304, 1, 1)
 
 [node name="Control" type="CanvasLayer"]
 
@@ -47,3 +50,30 @@ theme_override_font_sizes/font_size = 49
 text = "HP"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.5
+offset_right = 2.0
+offset_bottom = 2.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_xoy8v")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 10.0
+offset_top = 15.0
+offset_right = 200.0
+offset_bottom = 116.0
+text = "LOOK: mouse
+MOVE: WASD
+JUMP: space
+SHOOT: lmb
+PARRY: F"

@@ -14,13 +14,15 @@ func spawnHitMarker(position: Vector3, parent):
 	var world = get_tree().get_root()
 	world.add_child(hitMarkerInst)  # Add the marker to the scene tree
 	
-func getCameraCollision(rangeInt, dmgInt:int, spreadRad: Vector2):
+func getCameraCollision(rangeInt, dmgInt:int, spreadRad: Vector3):
 	var center = get_viewport().get_size()/2
 	
 	var rayOrigin = project_ray_origin(center)
-	var rayEnd = rayOrigin + project_ray_normal(center) * rangeInt 
+	var rayEnd = rayOrigin + project_ray_normal(center) * rangeInt
 	rayEnd.x += spreadRad.x
 	rayEnd.y += spreadRad.y
+	rayEnd.z += spreadRad.x
+	#rayEnd = rangeInt * rayEnd
 	
 	var newIntersection = PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd)
 	var intersection = get_world_3d().direct_space_state.intersect_ray(newIntersection)
