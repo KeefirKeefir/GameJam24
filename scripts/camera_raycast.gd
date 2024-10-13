@@ -14,7 +14,7 @@ func spawnHitMarker(position: Vector3, parent):
 	var world = get_tree().get_root()
 	world.add_child(hitMarkerInst)  # Add the marker to the scene tree
 	
-func getCameraCollision(rangeInt, dmgInt, spreadRad: Vector2):
+func getCameraCollision(rangeInt, dmgInt:int, spreadRad: Vector2):
 	var center = get_viewport().get_size()/2
 	
 	var rayOrigin = project_ray_origin(center)
@@ -29,7 +29,8 @@ func getCameraCollision(rangeInt, dmgInt, spreadRad: Vector2):
 		var hitObject = intersection.collider
 		spawnHitMarker(intersection.position, hitObject)
 		if hitObject.has_method("takeDmg"):
-			hitObject.takeDmg(hitObject)
+			print("hit: ",hitObject)
+			hitObject.takeDmg(hitObject, dmgInt)
 		
 		print(hitObject.name)
 	else:

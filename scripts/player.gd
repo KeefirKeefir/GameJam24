@@ -11,7 +11,7 @@ var gravity := 40  # Default gravity value
 }
 @export var shotgun = {
 	dmg = 3,
-	range = 1000,
+	range = 500,
 	isShotgun = true, 
 	ammo = 3, 
 	reload = 6.0,
@@ -75,9 +75,12 @@ func _input(event):
 				camNode.getCameraCollision(shotgun.range, shotgun.dmg, spread)
 		
 
-func takeDmg(collider):
-	print("ouch")
-	print(collider.name)
+func takeDmg(collider, amount: int):
+	#health -= amount
+	print('collider: ', collider)
+	#print("Health remaining: ", health)
+	#if health <= 0:
+		#die()
 
 # Maximum distance for the hitscan
 var max_distance = 1000.0
