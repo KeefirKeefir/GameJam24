@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://yqcweb8jrn2k"]
+[gd_scene load_steps=6 format=3 uid="uid://yqcweb8jrn2k"]
 
 [ext_resource type="Script" path="res://scripts/sniper.gd" id="1_lf307"]
 [ext_resource type="ArrayMesh" uid="uid://bfc4434tj4suk" path="res://assets/gcCamDrone.obj" id="1_sxuey"]
@@ -8,15 +8,6 @@
 albedo_texture = ExtResource("2_u5vfl")
 metallic = 1.0
 metallic_texture = ExtResource("2_u5vfl")
-
-[sub_resource type="SphereMesh" id="SphereMesh_70nd4"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j85nr"]
-transparency = 1
-albedo_color = Color(0.121569, 0.133333, 1, 0.843137)
-emission_enabled = true
-emission = Color(0, 0, 0.835294, 1)
-emission_energy_multiplier = 17.6
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vdxj4"]
 radius = 1.5
@@ -30,12 +21,6 @@ transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, 
 mesh = ExtResource("1_sxuey")
 skeleton = NodePath("../Hitbox")
 surface_material_override/0 = SubResource("StandardMaterial3D_8tt2r")
-
-[node name="signal" type="MeshInstance3D" parent="CamGun"]
-transform = Transform3D(1.45, 0, 0, 0, 1.45, 0, 0, 0, 1.45, -1.224, -1.944, 6.778)
-visible = false
-mesh = SubResource("SphereMesh_70nd4")
-surface_material_override/0 = SubResource("StandardMaterial3D_j85nr")
 
 [node name="Hitbox" type="CollisionShape3D" parent="."]
 transform = Transform3D(-0.7, -1.05697e-07, 4.62017e-15, 0, -3.0598e-08, -0.7, 1.05697e-07, -0.7, 3.0598e-08, -0.500884, -0.135736, -0.261389)

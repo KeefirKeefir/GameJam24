@@ -1,80 +1,96 @@
 extends CharacterBody3D
 
 @export_category("Stats")
-@export var health: int = 100
-@export var damage: int = 10
-@export var range: float = 200
-@export var downTime: float = 0.1
+@export var health: int = 30
+@export var damage: int = 20
+@export var range: float = 100
+@export var downTime: float = 3
+@export var spread = 15
 
 var hitMarker: PackedScene = preload("res://scenes/hitLocMarker.tscn")
 
-var player: CharacterBody3D  # Player reference
 
-# Input function to handle shooting
-func _input(event):
-	if event.is_action_pressed("shoot"):
-		print("Shoot action triggered")
-		shoot()
+@export var player: CharacterBody3D  # Player reference
+#var target: Camera3D
 
-# Function to perform shooting logic
-func shoot():
-	print("Shooting logic started")
-	var center: Vector3 = global_transform.origin
-	var player_position: Vector3 = find_player_position()
-	if player_position != Vector3.ZERO:  # If player is within range
-		print("Player in range at position: ", player_position)
-		var spread_x: float = randf_range(-2.3, 2.3)  # Add random spread
-		print("Random spread applied: ", spread_x)
-		var rayEnd: Vector3 = player_position + Vector3(spread_x, 0, 0)
-		print("Ray end position: ", rayEnd)
-		var hit_result = getCharacterCollision(center, rayEnd)
-		if hit_result:
-			print("Hit detected at: ", hit_result.position)
-			handleHit(hit_result)
-		else:
-			print("No hit detected")
+@onready var target = player.get_node("TwistPivot/PitchPivot/CameraController/Camera3D")
+#@onready var player = get_tree().get_nodes_in_group("Player")[0]  
+
+
+var elapsedTime: float = 0.0  # Variable to store the accumulated delta (time passed)
+
+@export var lrange:Vector2 = Vector2(-2,3)
+
+func timer(delta):
+	elapsedTime += delta
+	
+	# Check if the object's lifetime has been exceeded
+	if downTime - elapsedTime <= 2:
+		$CamGun/signal.visible = true
+		pass
+	
+	if elapsedTime >= downTime:
+			elapsedTime = 0
+			downTime = 5 + randf_range(lrange.x, lrange.y)
+			print(downTime)
+			getCollision(range, damage)
+			$CamGun/signal.visible = false
 	else:
-		print("Player out of range")
+		pass
+		#print("Time left:", lifetime - elapsedTime)
 
-# Function to handle raycasting and returning hit data
-func getCharacterCollision(rayOrigin: Vector3, rayEnd: Vector3) -> Dictionary:
-	print("Raycasting from ", rayOrigin, " to ", rayEnd)
-	var space_state = get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.new()
-	query.from = rayOrigin
-	query.to = rayEnd
-	return space_state.intersect_ray(query)  # Pass the query object correctly
+	# calculate the direction of the player using 'player_new_position'
+	# and multiply the result with the enemy speed and plug it all in move_and_slide()
 
-# Function to handle hit detection
-func handleHit(intersection: Dictionary):
-	var hitObject = intersection.collider
-	print("Hit object: ", hitObject.name if hitObject else "None")
-	spawnHitMarker(intersection.position)  # Spawn marker at the hit position
-	if hitObject and hitObject.has_method("takeDmg"):
-		print("Calling takeDmg on hit object")
-		hitObject.takeDmg(hitObject, damage)  # Pass damage value to the hit object
-		print("Hit: ", hitObject.name)
-	else:
-		print("Hit object has no takeDmg method")
-
-# Function to spawn hit marker at the hit location
-func spawnHitMarker(position: Vector3):
-	print("Spawning hit marker at: ", position)
+func spawnHitMarker(position: Vector3, parent):
 	var hitMarkerInst = hitMarker.instantiate()  # Create an instance of the marker scene
 	hitMarkerInst.global_transform.origin = position  # Set the position of the marker
-	add_child(hitMarkerInst)  # Add the marker to the current scene
+	var world = get_tree().get_root()
+	world.add_child(hitMarkerInst)
+
+
+# Function to perform shooting logic
+func getCollision(rangeInt, dmgInt:int):
+	var rayOrigin = self.position * 2
+	var rayEnd = target.global_position
+	rayEnd.x += deg_to_rad(randf_range(-spread, spread))
+	rayEnd.y += deg_to_rad(randf_range(-spread, spread))
+	
+	var newIntersection = PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd)
+	var intersection = get_world_3d().direct_space_state.intersect_ray(newIntersection)
+	
+	if not intersection.is_empty():
+		var hitObject = intersection.collider
+		spawnHitMarker(intersection.position, hitObject)
+		if hitObject.has_method("takeDmg"):
+			print("hit: ",hitObject)
+			hitObject.takeDmg(hitObject, dmgInt)
+		
+		print(hitObject.name)
+	else:
+		print("nothing")
+	
+
+# Function to handle raycasting and returning hit data
+
+
 
 # Function to detect the player and return their position
 func find_player_position() -> Vector3:
-	if player and global_transform.origin.distance_to(player.global_transform.origin) <= range:
-		print("Player detected: ", player.name)
-		return player.global_transform.origin
-	print("Player out of range or not found")
+
+	look_at(target.global_position, Vector3.UP)
+	
+	#print(global_transform.origin.distance_to(target.global_transform.origin))
+	#if target and global_transform.origin.distance_to(target.global_transform.origin) <= range:
+		#print("Player detected: ", player.name)
+		#return target.global_transform.origin
+	#print("Player out of range or not found")
 	return Vector3.ZERO
 
 # Function to handle character death
 func die():
 	print("Character died")
+	player.switchGun()
 	queue_free()  # Remove the character from the scene
 
 # Function to take damage
@@ -84,14 +100,26 @@ func takeDmg(collider, amount: int):
 	health -= amount
 	print("Health remaining: ", health)
 	if health <= 0:
+		health = 0
 		print("Health depleted, character will die")
 		die()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#var player = get_node("../TwistPivot/PitchPivot/CameraController/Camera3D")
+	print(player)
+	
+	print(target)
 	print("Node ready")
+	
+	print(player.position)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	#print(target.global_position)
+	find_player_position()
+	
+	timer(delta)
+	
 	# Optional logic to find the player and react
-	pass
+	

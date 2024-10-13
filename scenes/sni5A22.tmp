@@ -31,7 +31,7 @@ mesh = ExtResource("1_sxuey")
 skeleton = NodePath("../Hitbox")
 surface_material_override/0 = SubResource("StandardMaterial3D_8tt2r")
 
-[node name="signal" type="MeshInstance3D" parent="CamGun"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CamGun"]
 transform = Transform3D(1.45, 0, 0, 0, 1.45, 0, 0, 0, 1.45, -1.224, -1.944, 6.778)
 visible = false
 mesh = SubResource("SphereMesh_70nd4")

@@ -3,7 +3,7 @@ extends Node3D
 
 @export var mouse_sensitivity := 0.0025
 @export var yaw_clamp : Vector2 = Vector2(-180.0, 180.0)  # Min and max for yaw
-@export var pitch_clamp : Vector2 = Vector2(-30.0, 30.0)   # Min and max for pitch
+@export var pitch_clamp : Vector2 = Vector2(-60.0, 60.0)   # Min and max for pitch
 
 var twist_input := 0.0
 var pitch_input := 0.0

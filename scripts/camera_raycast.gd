@@ -1,6 +1,6 @@
 extends Camera3D
 
-var rayRange := 2000
+var rangeInt := 2000
 #const hitMarker = preload("hitLocMarker.tscn")
 var hitMarker: PackedScene = preload("res://scenes/hitLocMarker.tscn")
 

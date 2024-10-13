@@ -38,5 +38,5 @@ script = ExtResource("4_nuu8l")
 mesh = SubResource("PlaceholderMesh_1b80v")
 
 [node name="MeshInstance3D2" parent="TwistPivot/PitchPivot/CameraController/Camera3D/MeshInstance3D" instance=ExtResource("5_pesc3")]
-transform = Transform3D(-2.18557e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.18557e-09, 0.411226, -0.244954, -0.693282)
+transform = Transform3D(-2.18557e-09, 0, 0.05, -0.00263597, 0.0499305, -1.15222e-10, -0.0499305, -0.00263597, -2.18253e-09, 0.411226, -0.244954, -0.693282)
 skeleton = NodePath("../..")
