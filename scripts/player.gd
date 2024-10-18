@@ -1,15 +1,36 @@
 extends CharacterBody3D
-
+#game Settings
+@export var shiftJumpEnabled := false
+#sounds
 @onready var pistolShot = $PistolSound
 @onready var shotgunShot = $ShotgunSound
 @onready var swapSound = $swapSound
 @onready var dink = $Dink
+#player nodes
+@onready var gunNode = get_node("TwistPivot/PitchPivot/CameraController/Camera3D/MeshInstance3D/MeshInstance3D2")
+@onready var movNode := $Movement
+@onready var camNode := $TwistPivot/PitchPivot/CameraController/Camera3D
+#other nodes
+@export var hud: CanvasLayer
+@onready var hpBar = hud.get_node("infoBox/hpVisual")
+@onready var hpText = hud.get_node("infoBox/hpVal")
 
-var dashing: bool = false
-var dashTime :float = 0.0
-var shifting: bool = false
-
+#player stats
 var gravity := 40  # Default gravity value
+@export var health: int = 100
+
+#other player values
+var shifting := false
+var dashing := false
+var dashTime0 := 0.0 #..Time0 is the timer's current time, ..Time is the desired length of time
+@export var dashTime := 0.06 #should be const, is var for testing, same for other Time floats
+var parrying := false
+var parryTime0 := 0.0
+@export var parryTime := 0.5
+
+#TODO: items should be moved to their own scenes and scripts
+enum guns {pistol, shotgun}
+var gun = guns.pistol
 @export var pistol = {
 	canFire = true,
 	dmg = 10,
@@ -17,7 +38,8 @@ var gravity := 40  # Default gravity value
 	isShotgun = false, 
 	ammo = 12, 
 	reload = 5.0,
-	downtime = 0.5
+	delay0 = 0.0,
+	delay = 0.5
 }
 @export var shotgun = {
 	canFire = true,
@@ -26,136 +48,52 @@ var gravity := 40  # Default gravity value
 	isShotgun = true, 
 	ammo = 3, 
 	reload = 6.0,
-	downtime = 0
+	delay0 = 0,
+	delay = 1
 }
 
-var parrying = false
-
-enum guns {pistol, shotgun}
-
-var gun = guns.pistol
-
-@onready var gunModel = get_node("TwistPivot/PitchPivot/CameraController/Camera3D/MeshInstance3D/MeshInstance3D2")
-
-var parryTime :float = 0.0
-
-@export var health: int = 100
-
+#timers
 func parryTimer(delta):
-	if parrying == true:
-		parryTime += delta
-		
-		if parryTime >= 0.5:
-				parrying = false
-				$"%shield".position.y = -1
-				parryTime = 0
-				
+	parryTime0 -= delta
+	if parryTime0 <= 0.0 and parrying == true:
+		parrying = false
+		$"%shield".position.y = -1
 	else:
 		pass
 
-func timer(delta):
-	shotgun.downtime += delta
-	
-	if shotgun.downtime >= 1:
+func shotgunTimer(delta):
+	shotgun.delay0 -= delta
+	if shotgun.delay0 <= 0:
 			shotgun.canFire = true
-			gunModel.rotation.z = deg_to_rad(0)
+			gunNode.rotation.z = deg_to_rad(0)
 	else:
 		pass
-		
+
 func dashTimer(delta):
-	dashTime += delta
-	
-	if dashTime >= 0.6:
+	dashTime0 -= delta
+	if dashTime0 <= 0:
 			dashing = false
 	else:
 		pass
 
+#functions
 func switchGun():
 	swapSound.pitch_scale = randf_range(0.9, 1.1)
 	swapSound.play()
 	if gun == guns.pistol:
 		gun = guns.shotgun
-		gunModel.rotation.y = deg_to_rad(-90)
+		gunNode.rotation.y = deg_to_rad(-90)
 	else:
-		gunModel.rotation.y = deg_to_rad(90)
+		gunNode.rotation.y = deg_to_rad(90)
 		gun = guns.pistol
-		gunModel.rotation.z = deg_to_rad(0)
-
-func _ready():
-	
-	gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	movement_node.player = self
-	
-	
-
-@onready var movement_node := $Movement
-@onready var camNode := $TwistPivot/PitchPivot/CameraController/Camera3D
-@export var hud: CanvasLayer
-@onready var hpBar = hud.get_node("infoBox/hpVisual")
-@onready var hpText = hud.get_node("infoBox/hpVal")
+		gunNode.rotation.z = deg_to_rad(0)
 
 func die():
 	get_tree().quit()
 	print("player dead")
 
-func _physics_process(delta:float):
-	var input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	
-	# Apply movement and gravity through Movement node
-	movement_node.apply_gravity(gravity, delta)
-	movement_node.apply_movement(input_vector)
-
-	# Update movement logic inside Movement node
-	movement_node.update_movement()
-	if Input.is_action_pressed("jump"):
-		shifting = true
-	else:
-		shifting = false
-	
-	# Handle jump logic
-	if Input.is_action_just_pressed("dash"):
-		if shifting == true:
-			movement_node.jump()
-		else:
-			dashing = true
-			dashTime = 0.0
-			#movement_node.dash(input_vector)
-
-
-	
-	parryTimer(delta)
-	print(parrying)
-	timer(delta)
-	dashTimer(delta)
-
-
-
 func get_input():
 	return Input.get_vector("left", "right", "forward", "back")
-
-func _input(event):
-	if event.is_action_pressed("shoot"):
-		var igun = gun
-		if igun == guns.pistol:
-			camNode.getCameraCollision(pistol.range, pistol.dmg , Vector3.ZERO)
-			pistolShot.pitch_scale = randf_range(0.9, 1.1)
-			pistolShot.play()
-			#sound and anim
-		elif igun == guns.shotgun and shotgun.canFire == true:
-			shotgun.canFire = false
-			shotgun.downtime = 0
-			gunModel.rotation.z = deg_to_rad(-30)
-			for n in range(8):
-				var spread = (Vector3(randf_range(-5, 5), randf_range(-5, 5), randf_range(-5, 5)))
-				
-				camNode.getCameraCollision(shotgun.range, shotgun.dmg, spread)
-			shotgunShot.pitch_scale = randf_range(0.9, 1.1)
-			shotgunShot.play()
-	if event.is_action_pressed("parry") and parryTime == 0:
-		parrying = true
-		$"%shield".position.y = -0.6
-		
 
 func takeDmg(collider, amount: int):
 	if parrying == false:
@@ -173,7 +111,64 @@ func takeDmg(collider, amount: int):
 	else:
 		dink.pitch_scale = randf_range(0.9, 1.1)
 		dink.play()
-		
 
-# Maximum distance for the hitscan
-var max_distance = 1000.0
+#main functions
+func _ready():
+	gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	movNode.player = self
+
+func _physics_process(delta:float): #for consistent timings
+	var input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	# Apply movement and gravity through Movement node
+	movNode.apply_gravity(gravity, delta)
+	movNode.apply_movement(input_vector)
+	# Update movement logic inside Movement node
+	movNode.update_movement()
+	
+	# timers
+	parryTimer(delta)
+	shotgunTimer(delta)
+	dashTimer(delta)
+
+func _process(delta: float): #for more precise timings
+	
+	if Input.is_action_pressed("shift"):
+		shifting = true
+	else:
+		shifting = false
+	#jump and dash
+	if Input.is_action_just_pressed("shiftJumpDash") and shiftJumpEnabled == true:
+		if shifting == true:
+			movNode.jump()
+		else:
+			dashing = true
+			dashTime0 = dashTime
+	elif Input.is_action_just_pressed("jump") and shiftJumpEnabled == false:
+		movNode.jump()
+	if Input.is_action_just_pressed("dash") and shiftJumpEnabled == false:
+		dashing = true
+		dashTime0 = dashTime
+		
+func _unhandled_input(event: InputEvent):
+	if event.is_action_pressed("shoot"):
+		var igun = gun
+		if igun == guns.pistol:
+			camNode.getCameraCollision(pistol.range, pistol.dmg , Vector3.ZERO)
+			pistolShot.pitch_scale = randf_range(0.9, 1.1)
+			pistolShot.play()
+			#sound and anim
+		elif igun == guns.shotgun and shotgun.canFire == true:
+			shotgun.canFire = false
+			shotgun.delay0 = shotgun.delay
+			gunNode.rotation.z = deg_to_rad(-30)
+			for n in range(8):
+				var spread = (Vector3(randf_range(-5, 5), randf_range(-5, 5), randf_range(-5, 5)))
+				camNode.getCameraCollision(shotgun.range, shotgun.dmg, spread)
+			shotgunShot.pitch_scale = randf_range(0.9, 1.1)
+			shotgunShot.play()
+	if event.is_action_pressed("parry") and parryTime0 <= 0.0:
+		parrying = true
+		parryTime0 = parryTime
+		$"%shield".position.y = -0.6
+		
