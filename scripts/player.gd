@@ -5,6 +5,10 @@ extends CharacterBody3D
 @onready var swapSound = $swapSound
 @onready var dink = $Dink
 
+var dashing: bool = false
+var dashTime :float = 0.0
+var shifting: bool = false
+
 var gravity := 40  # Default gravity value
 @export var pistol = {
 	canFire = true,
@@ -57,6 +61,14 @@ func timer(delta):
 			gunModel.rotation.z = deg_to_rad(0)
 	else:
 		pass
+		
+func dashTimer(delta):
+	dashTime += delta
+	
+	if dashTime >= 0.6:
+			dashing = false
+	else:
+		pass
 
 func switchGun():
 	swapSound.pitch_scale = randf_range(0.9, 1.1)
@@ -96,15 +108,26 @@ func _physics_process(delta:float):
 
 	# Update movement logic inside Movement node
 	movement_node.update_movement()
+	if Input.is_action_pressed("jump"):
+		shifting = true
+	else:
+		shifting = false
 	
 	# Handle jump logic
-	if is_on_floor() and Input.is_action_just_pressed("jump"):
-		movement_node.jump()
+	if Input.is_action_just_pressed("dash"):
+		if shifting == true:
+			movement_node.jump()
+		else:
+			dashing = true
+			dashTime = 0.0
+			#movement_node.dash(input_vector)
+
+
 	
 	parryTimer(delta)
 	print(parrying)
 	timer(delta)
-		
+	dashTimer(delta)
 
 
 

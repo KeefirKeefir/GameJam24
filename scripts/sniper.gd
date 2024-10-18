@@ -5,7 +5,7 @@ extends CharacterBody3D
 @export_category("Stats")
 @export var health: int = 30
 @export var damage: int = 5
-@export var range: float = 100
+@export var range: float = 30
 
 @export var downTime: float = 3 + randf_range(lrange.x, lrange.y)
 @export var spread = 15
@@ -30,14 +30,14 @@ func timer(delta):
 	elapsedTime += delta
 	
 	# Check if the object's lifetime has been exceeded
-	if downTime - elapsedTime <= 2:
+	if downTime - elapsedTime <= 2 and global_transform.origin.distance_to(target.global_transform.origin) <= range:
 		$CamGun/signal.visible = true
 		
-	if downTime - elapsedTime <= 0.3:
+	if downTime - elapsedTime <= 0.3 and global_transform.origin.distance_to(target.global_transform.origin) <= range:
 		$CamGun/signal.visible = false
 		$CamGun/signal2.visible = true
 	
-	if elapsedTime >= downTime:
+	if elapsedTime >= downTime and global_transform.origin.distance_to(target.global_transform.origin) <= range:
 			elapsedTime = 0
 			downTime = 3 + randf_range(lrange.x, lrange.y)
 			print(downTime)
@@ -74,28 +74,28 @@ func spawnHitMarker(position: Vector3, parent):
 
 # Function to perform shooting logic
 func getCollision(rangeInt, dmgInt:int):
-	if target.global_transform.origin.distance_to(target.global_transform.origin) <= range:
-		var rayOrigin = self.position * 2
-		var rayEnd = target.global_position
-		rayEnd.x += deg_to_rad(randf_range(-spread, spread))
-		rayEnd.y += deg_to_rad(randf_range(-spread, spread))
-		rayEnd.z += deg_to_rad(randf_range(-spread, spread))
+	
+	
+	var rayOrigin = self.position * 2
+	var rayEnd = target.global_position
+	rayEnd.x += deg_to_rad(randf_range(-spread, spread))
+	rayEnd.y += deg_to_rad(randf_range(-spread, spread))
+	rayEnd.z += deg_to_rad(randf_range(-spread, spread))
+	
+	var newIntersection = PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd)
+	var intersection = get_world_3d().direct_space_state.intersect_ray(newIntersection)
+	
+	if not intersection.is_empty():
+		var hitObject = intersection.collider
+		spawnHitMarker(intersection.position, hitObject)
+		if hitObject.has_method("takeDmg"):
+			print("hit: ",hitObject)
+			hitObject.takeDmg(hitObject, dmgInt)
 		
-		var newIntersection = PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd)
-		var intersection = get_world_3d().direct_space_state.intersect_ray(newIntersection)
-		
-		if not intersection.is_empty():
-			var hitObject = intersection.collider
-			spawnHitMarker(intersection.position, hitObject)
-			if hitObject.has_method("takeDmg"):
-				print("hit: ",hitObject)
-				hitObject.takeDmg(hitObject, dmgInt)
-			
-			print(hitObject.name)
-		else:
-			print("nothing")
+		print(hitObject.name)
 	else:
-		pass
+		print("nothing")
+
 	
 
 # Function to handle raycasting and returning hit data
