@@ -3,12 +3,10 @@
 [ext_resource type="ArrayMesh" uid="uid://c20vteratwg3b" path="res://assets/gcpistol.obj" id="1_bfg3j"]
 [ext_resource type="Script" path="res://scripts/glowing_gun.gd" id="1_etax5"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fhur7"]
-roughness = 0.0
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n03xs"]
 emission_enabled = true
 emission = Color(1, 1, 1, 1)
 emission_energy_multiplier = 10.0
-normal_scale = 16.0
 
 [node name="glowingGun" type="Node3D" groups=["guns"]]
 script = ExtResource("1_etax5")
@@ -16,4 +14,4 @@ script = ExtResource("1_etax5")
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-2.18557e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.18557e-09, 0, 0, 0)
 mesh = ExtResource("1_bfg3j")
-surface_material_override/0 = SubResource("StandardMaterial3D_fhur7")
+surface_material_override/0 = SubResource("StandardMaterial3D_n03xs")

@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://duovs61wi8j0q"]
+
+[ext_resource type="Script" path="res://scripts/shotrifle.gd" id="1_tbn6q"]
+[ext_resource type="ArrayMesh" uid="uid://c20vteratwg3b" path="res://assets/gcpistol.obj" id="2_1o5a8"]
+[ext_resource type="Texture2D" uid="uid://c45u8eeryevj3" path="res://icon.svg" id="3_4kklo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_muri5"]
+albedo_texture = ExtResource("3_4kklo")
+
+[node name="shotrifle" type="Node3D" groups=["guns"]]
+script = ExtResource("1_tbn6q")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.18557e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.18557e-09, 0, 0, 0)
+mesh = ExtResource("2_1o5a8")
+surface_material_override/0 = SubResource("StandardMaterial3D_muri5")

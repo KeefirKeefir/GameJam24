@@ -1,31 +1,57 @@
 extends Node3D
 
-@onready var pistol = get_parent().get_node("TwistPivot/PitchPivot/Camera3D/socket/glowingGun")
+#@onready var pistol = get_parent().get_node("TwistPivot/PitchPivot/Camera3D/socket/glowingGun")
 @onready var socket = get_parent().get_node("TwistPivot/PitchPivot/Camera3D/socket")
-var gunSlotA = null
+#these hold a reference to the gun's node
+var primSlot = null
+var secSlot = null
+var altSlot = null
 var equippedSlot
 
 var paths = {
-	glowingGun = "res://scenes/glowingGun.tscn"
+	glowingGun = "res://scenes/glowingGun.tscn",
+	shotrifle = "res://scenes/shotrifle.tscn"
 }
 
 func _ready() -> void:
-	loadGun(paths.glowingGun, gunSlotA)
+	primSlot = loadGun(primSlot, paths.glowingGun)
+	secSlot = loadGun(secSlot, paths.shotrifle)
 
-func loadGun(toLoad, gunSlot):
-	var loadedGun = load(toLoad)
-	gunSlot = loadedGun.instantiate()
-	gunSlotA = gunSlot
+func equipGun(gunSlot):
+	if equippedSlot != null:
+		equippedSlot.visible = false
 	equippedSlot = gunSlot
-	#gunInst.global_transform.origin = Vector3.ZERO
-	socket.add_child(gunSlotA)
+	print(equippedSlot)
+	equippedSlot.visible = true
+	
+
+func loadGun(gunSlot: Node, toLoad: String): #done at the beginning of the game, toLoad is chosen by player
+	var loadedGun = load(toLoad)
+	if gunSlot == null:
+		gunSlot = loadedGun.instantiate()
+		equipGun(gunSlot)
+		#gunInst.global_transform.origin = Vector3.ZERO
+		socket.add_child(gunSlot)
+	else: #swap
+		pass
+	return gunSlot
 
 func _process(delta: float) -> void:
 	pass
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("equipPrimary"): # and primSlot != null:
+		equipGun(primSlot)
+	if event.is_action_pressed("equipSecondary"): #and secSlot != null:
+		equipGun(secSlot)
+	if event.is_action_pressed("equipAlternate") and altSlot != null:
+		equipGun(altSlot)
+
+
 func _unhandled_input(event: InputEvent):
 	if event.is_action_pressed("shoot"):
-		
 		#get_tree().get_nodes_in_group("guns")[0]
 		equippedSlot.shoot()
+	if event.is_action_pressed("reload"):
+		equippedSlot.reload()
  

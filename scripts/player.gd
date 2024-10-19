@@ -7,7 +7,7 @@ extends CharacterBody3D
 @onready var swapSound = $swapSound
 @onready var dink = $Dink
 #player nodes
-@onready var gunNode = get_node("TwistPivot/PitchPivot/Camera3D/MeshInstance3D/MeshInstance3D2")
+@onready var gunNode = get_node("TwistPivot/PitchPivot/Camera3D/socket/MeshInstance3D2")
 @onready var movNode := $Movement
 @onready var camNode := $TwistPivot/PitchPivot/Camera3D
 #other nodes
@@ -28,37 +28,15 @@ var parrying := false
 var parryTime0 := 0.0
 @export var parryTime := 0.5
 
-#TODO: items should be moved to their own scenes and scripts
-enum guns {pistol, shotgun}
-var gun = guns.pistol
-@export var pistol = {
-	canFire = true,
-	dmg = 10,
-	range = 100,
-	isShotgun = false, 
-	ammo = 12, 
-	reload = 5.0,
-	delay0 = 0.0,
-	delay = 0.5
-}
-@export var shotgun = {
-	canFire = true,
-	dmg = 6,
-	range = 30,
-	isShotgun = true, 
-	ammo = 3, 
-	reload = 6.0,
-	delay0 = 0,
-	delay = 1
-}
+
 #ready
 func _ready():
 	gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	movNode.player = self
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in enemies: 
-		enemy.died.connect(switchGun)
+	#var enemies = get_tree().get_nodes_in_group("enemies")
+	#for enemy in enemies: 
+		#enemy.died.connect(switchGun)
 
 #timers
 func parryTimer(delta):
@@ -69,13 +47,6 @@ func parryTimer(delta):
 	else:
 		pass
 
-func shotgunTimer(delta):
-	shotgun.delay0 -= delta
-	if shotgun.delay0 <= 0:
-			shotgun.canFire = true
-			#gunNode.rotation.z = deg_to_rad(0)
-	else:
-		pass
 
 func dashTimer(delta):
 	dashTime0 -= delta
@@ -83,18 +54,6 @@ func dashTimer(delta):
 			dashing = false
 	else:
 		pass
-
-#functions
-func switchGun():
-	swapSound.pitch_scale = randf_range(0.9, 1.1)
-	swapSound.play()
-	if gun == guns.pistol:
-		gun = guns.shotgun
-		#gunNode.rotation.y = deg_to_rad(-90)
-	elif gun == guns.shotgun:
-		gun = guns.pistol
-		#gunNode.rotation.y = deg_to_rad(90)
-		#gunNode.rotation.z = deg_to_rad(0)
 
 func die():
 	get_tree().quit()
@@ -131,7 +90,6 @@ func _physics_process(delta:float): #for consistent timings
 	movNode.update_movement()
 	# timers
 	parryTimer(delta)
-	shotgunTimer(delta)
 	dashTimer(delta)
 
 func _process(delta: float): #for more precise timings
@@ -153,24 +111,9 @@ func _process(delta: float): #for more precise timings
 		dashing = true
 		dashTime0 = dashTime
 		
-#func _unhandled_input(event: InputEvent):
-	#if event.is_action_pressed("shoot"):
-		#var igun = gun
-		#if igun == guns.pistol:
-			#camNode.castHitscan(pistol.range, pistol.dmg , Vector2.ZERO)
-			#pistolShot.pitch_scale = randf_range(0.9, 1.1)
-			#pistolShot.play()
-			##sound and anim
-		#elif igun == guns.shotgun and shotgun.canFire == true:
-			#shotgun.canFire = false
-			#shotgun.delay0 = shotgun.delay
-			#gunNode.rotation.z = deg_to_rad(-30)
-			#for n in range(8):
-				#var spread = (Vector2(deg_to_rad(randf_range(-5, 5)), deg_to_rad(randf_range(-5, 5))))
-				#camNode.castHitscan(shotgun.range, shotgun.dmg, spread)
-			#shotgunShot.pitch_scale = randf_range(0.9, 1.1)
-			#shotgunShot.play()
-	#if event.is_action_pressed("parry") and parryTime0 <= 0.0:
-		#parrying = true
-		#parryTime0 = parryTime
-		#$"%shield".position.y = -0.6
+func _unhandled_input(event: InputEvent):
+
+	if event.is_action_pressed("parry") and parryTime0 <= 0.0:
+		parrying = true
+		parryTime0 = parryTime
+		$"%shield".position.y = -0.6
