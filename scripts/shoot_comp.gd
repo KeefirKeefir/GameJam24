@@ -1,11 +1,13 @@
-extends Camera3D
-
-var rangeInt := 200
+extends Node3D
 #const hitMarker = preload("hitLocMarker.tscn")
 var hitMarker: PackedScene = preload("res://scenes/hitLocMarker.tscn")
 
 var camera
 var cameraDir
+
+func _ready():
+	var parentNode = get_parent()
+	camera = parentNode.get_node("TwistPivot/PitchPivot/Camera3D")
 
 func spawnHitMarker(position: Vector3, parent):
 	var hitMarkerInst = hitMarker.instantiate()  # Create an instance of the marker scene
@@ -30,7 +32,7 @@ func castHitscan(rangeInt, dmgInt:int, spreadAngle: Vector2):
 	)
 	var center = get_viewport().get_size() / 2
 	
-	var rayOrigin = project_ray_origin(center)
+	var rayOrigin = camera.project_ray_origin(center)
 	var rayEnd = rayOrigin + rayDir * rangeInt
 	
 	var newRay = PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd)
@@ -47,14 +49,5 @@ func castHitscan(rangeInt, dmgInt:int, spreadAngle: Vector2):
 	else:
 		print("nothing")
 	
-	
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	camera = get_node("../Camera3D")
-	
- # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

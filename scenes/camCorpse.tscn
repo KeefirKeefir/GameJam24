@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dnuy38dexycmt"]
 
 [ext_resource type="ArrayMesh" uid="uid://bfc4434tj4suk" path="res://assets/gcCamDrone.obj" id="1_56xrx"]
-[ext_resource type="Script" path="res://scenes/cam_corpse.gd" id="1_awben"]
+[ext_resource type="Script" path="res://scripts/cam_corpse.gd" id="1_awben"]
 [ext_resource type="Texture2D" uid="uid://p5yuqqub3yfu" path="res://assets/camGrid2.png" id="2_cm2ie"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1vqpu"]

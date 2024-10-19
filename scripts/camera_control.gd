@@ -3,24 +3,14 @@ extends Node3D
 
 @export var mouse_sensitivity := 0.0025
 @export var yaw_clamp : Vector2 = Vector2(-180.0, 180.0)  # Min and max for yaw
-@export var pitch_clamp : Vector2 = Vector2(-60.0, 60.0)   # Min and max for pitch
+@export var pitch_clamp : Vector2 = Vector2(-89.95, 90.0)   # Min and max for pitch
+#min pitch is -89.95 because a value of -89.96 or higher inverts forward/backward controls
 
 var twist_input := 0.0
 var pitch_input := 0.0
 
-@onready var pitch_pivot := $PitchPivot  # Reference to the pitch pivot (child node)
-@onready var camera := $PitchPivot/CameraController/Camera3D  # Reference to the camera (child of pitch pivot)
+@onready var camera := $PitchPivot # Reference to the pitch pivot (child node)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	# Check for mouse mode toggle
-	if Input.is_action_just_pressed("ui_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
-# Handle unhandled input (like mouse movement)
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		rotate_camera(event)
 
 # Function to handle camera rotation
 func rotate_camera(event: InputEventMouseMotion) -> void:
@@ -33,9 +23,18 @@ func rotate_camera(event: InputEventMouseMotion) -> void:
 	rotation_degrees.y = clamp(rotation_degrees.y, yaw_clamp.x, yaw_clamp.y)  # Clamp Y rotation
 
 	# Apply pitch rotation (X-axis) to the pitch pivot
-	pitch_pivot.rotate_x(pitch_input)
-	pitch_pivot.rotation_degrees.x = clamp(pitch_pivot.rotation_degrees.x, pitch_clamp.x, pitch_clamp.y)  # Clamp X rotation
+	camera.rotate_x(pitch_input)
+	camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, pitch_clamp.x, pitch_clamp.y)  # Clamp X rotation
 
 	# Clear inputs after applying them to avoid continuous rotation
 	twist_input = 0.0
 	pitch_input = 0.0
+
+func _process(_delta: float) -> void:
+	# Check for mouse mode toggle
+	if Input.is_action_just_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		rotate_camera(event)

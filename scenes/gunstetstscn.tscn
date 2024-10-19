@@ -7,5 +7,6 @@
 albedo_texture = ExtResource("2_hw8ey")
 
 [node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 mesh = ExtResource("1_2ht0s")
 surface_material_override/0 = SubResource("StandardMaterial3D_6pu7b")

@@ -7,9 +7,9 @@ extends CharacterBody3D
 @onready var swapSound = $swapSound
 @onready var dink = $Dink
 #player nodes
-@onready var gunNode = get_node("TwistPivot/PitchPivot/CameraController/Camera3D/MeshInstance3D/MeshInstance3D2")
+@onready var gunNode = get_node("TwistPivot/PitchPivot/Camera3D/MeshInstance3D/MeshInstance3D2")
 @onready var movNode := $Movement
-@onready var camNode := $TwistPivot/PitchPivot/CameraController/Camera3D
+@onready var camNode := $TwistPivot/PitchPivot/Camera3D
 #other nodes
 @export var hud: CanvasLayer
 @onready var hpBar = hud.get_node("infoBox/hpVisual")
@@ -51,6 +51,14 @@ var gun = guns.pistol
 	delay0 = 0,
 	delay = 1
 }
+#ready
+func _ready():
+	gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	movNode.player = self
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemies: 
+		enemy.died.connect(switchGun)
 
 #timers
 func parryTimer(delta):
@@ -65,7 +73,7 @@ func shotgunTimer(delta):
 	shotgun.delay0 -= delta
 	if shotgun.delay0 <= 0:
 			shotgun.canFire = true
-			gunNode.rotation.z = deg_to_rad(0)
+			#gunNode.rotation.z = deg_to_rad(0)
 	else:
 		pass
 
@@ -82,11 +90,11 @@ func switchGun():
 	swapSound.play()
 	if gun == guns.pistol:
 		gun = guns.shotgun
-		gunNode.rotation.y = deg_to_rad(-90)
-	else:
-		gunNode.rotation.y = deg_to_rad(90)
+		#gunNode.rotation.y = deg_to_rad(-90)
+	elif gun == guns.shotgun:
 		gun = guns.pistol
-		gunNode.rotation.z = deg_to_rad(0)
+		#gunNode.rotation.y = deg_to_rad(90)
+		#gunNode.rotation.z = deg_to_rad(0)
 
 func die():
 	get_tree().quit()
@@ -113,10 +121,6 @@ func takeDmg(collider, amount: int):
 		dink.play()
 
 #main functions
-func _ready():
-	gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	movNode.player = self
 
 func _physics_process(delta:float): #for consistent timings
 	var input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -125,7 +129,6 @@ func _physics_process(delta:float): #for consistent timings
 	movNode.apply_movement(input_vector)
 	# Update movement logic inside Movement node
 	movNode.update_movement()
-	
 	# timers
 	parryTimer(delta)
 	shotgunTimer(delta)
@@ -150,25 +153,24 @@ func _process(delta: float): #for more precise timings
 		dashing = true
 		dashTime0 = dashTime
 		
-func _unhandled_input(event: InputEvent):
-	if event.is_action_pressed("shoot"):
-		var igun = gun
-		if igun == guns.pistol:
-			camNode.getCameraCollision(pistol.range, pistol.dmg , Vector3.ZERO)
-			pistolShot.pitch_scale = randf_range(0.9, 1.1)
-			pistolShot.play()
-			#sound and anim
-		elif igun == guns.shotgun and shotgun.canFire == true:
-			shotgun.canFire = false
-			shotgun.delay0 = shotgun.delay
-			gunNode.rotation.z = deg_to_rad(-30)
-			for n in range(8):
-				var spread = (Vector3(randf_range(-5, 5), randf_range(-5, 5), randf_range(-5, 5)))
-				camNode.getCameraCollision(shotgun.range, shotgun.dmg, spread)
-			shotgunShot.pitch_scale = randf_range(0.9, 1.1)
-			shotgunShot.play()
-	if event.is_action_pressed("parry") and parryTime0 <= 0.0:
-		parrying = true
-		parryTime0 = parryTime
-		$"%shield".position.y = -0.6
-		
+#func _unhandled_input(event: InputEvent):
+	#if event.is_action_pressed("shoot"):
+		#var igun = gun
+		#if igun == guns.pistol:
+			#camNode.castHitscan(pistol.range, pistol.dmg , Vector2.ZERO)
+			#pistolShot.pitch_scale = randf_range(0.9, 1.1)
+			#pistolShot.play()
+			##sound and anim
+		#elif igun == guns.shotgun and shotgun.canFire == true:
+			#shotgun.canFire = false
+			#shotgun.delay0 = shotgun.delay
+			#gunNode.rotation.z = deg_to_rad(-30)
+			#for n in range(8):
+				#var spread = (Vector2(deg_to_rad(randf_range(-5, 5)), deg_to_rad(randf_range(-5, 5))))
+				#camNode.castHitscan(shotgun.range, shotgun.dmg, spread)
+			#shotgunShot.pitch_scale = randf_range(0.9, 1.1)
+			#shotgunShot.play()
+	#if event.is_action_pressed("parry") and parryTime0 <= 0.0:
+		#parrying = true
+		#parryTime0 = parryTime
+		#$"%shield".position.y = -0.6

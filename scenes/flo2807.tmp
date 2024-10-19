@@ -23,10 +23,6 @@ glow_enabled = true
 [node name="StaticBody3D" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
-[node name="Player" parent="." node_paths=PackedStringArray("hud") instance=ExtResource("1_y876f")]
-transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, -0.357475, 0.5, 30.3535)
-hud = NodePath("../Control")
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ejyda")
 
@@ -137,17 +133,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.9054, 10.0802, 43.6453)
 use_collision = true
 size = Vector3(21.8879, 11.3497, 1.15154)
 
-[node name="Sniper" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(-1, 0, -8.9407e-08, 0, 1, 0, 8.9407e-08, 0, -1, -10.1028, 7.95262, 2.97744)
 spread = 30
+player = NodePath("")
 
-[node name="Sniper2" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(-1, 0, -8.9407e-08, 0, 1, 0, 8.9407e-08, 0, -1, -0.812181, 7.95262, 2.97744)
 spread = 30
+player = NodePath("")
 
-[node name="Sniper3" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper3" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(-1, 0, -8.9407e-08, 0, 1, 0, 8.9407e-08, 0, -1, 14.0741, 7.95262, 2.97744)
 spread = 30
+player = NodePath("")
 
 [node name="Node3D" type="Node3D" parent="."]
 
@@ -156,17 +155,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15.1059)
 
 [node name="Control" parent="." instance=ExtResource("3_1y4ew")]
 
-[node name="Sniper4" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper4" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 1.78814e-07, 0, 1, 0, -1.78814e-07, 0, 1, 9.38935, 15.9052, 17.9397)
 spread = 30
+player = NodePath("")
 
-[node name="Sniper5" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper5" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 1.78814e-07, 0, 1, 0, -1.78814e-07, 0, 1, -12.62, 3.50567, 17.9397)
 spread = 30
+player = NodePath("")
 
-[node name="Sniper6" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper6" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 1.78814e-07, 0, 1, 0, -1.78814e-07, 0, 1, 25.2159, 3.50567, 17.9397)
 spread = 30
+player = NodePath("")
 
 [node name="RigidBody3D" parent="." instance=ExtResource("4_tgvj3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 7, 9)
@@ -186,92 +188,126 @@ transform = Transform3D(1.83458, 0, 2.37367, 0, 3, 0, -2.37367, 0, 1.83458, 60.1
 [node name="Train5" parent="." instance=ExtResource("5_xx65l")]
 transform = Transform3D(2.94287, 0, -0.582703, 0, 3, 0, 0.582703, 0, 2.94287, 129.091, -3.38708, 75.0627)
 
-[node name="Sniper7" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper7" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.1393, 10.8183, 84.0945)
+player = NodePath("")
 
-[node name="Sniper8" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper8" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.037, 10.8183, 84.0945)
+player = NodePath("")
 
-[node name="Sniper9" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper9" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.4159, 10.8183, 84.0945)
+player = NodePath("")
 
-[node name="Sniper10" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper10" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.4159, -4.6558, 89.4067)
+player = NodePath("")
 
-[node name="Sniper11" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper11" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.4933, 7.86708, -44.2824)
+player = NodePath("")
 
-[node name="Sniper12" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper12" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75.7683, 7.86708, -48.4513)
+player = NodePath("")
 
-[node name="Sniper13" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper13" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72.0465, 7.86708, -25.9093)
+player = NodePath("")
 
-[node name="Sniper14" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper14" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.505, 8.12262, -23.6352)
+player = NodePath("")
 
-[node name="Sniper15" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper15" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.505, 19.4037, -51.4196)
+player = NodePath("")
 
-[node name="Sniper16" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper16" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 74.3474, 19.4037, -45.5317)
+player = NodePath("")
 
-[node name="Sniper17" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper17" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6478, 19.4037, -77.6701)
+player = NodePath("")
 
-[node name="Sniper18" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper18" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6478, 19.4037, -54.9005)
+player = NodePath("")
 
-[node name="Sniper19" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper19" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.7067, 19.4037, -43.2472)
+player = NodePath("")
 
-[node name="Sniper20" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper20" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.037, 19.4037, -4.32905)
+player = NodePath("")
 
-[node name="Sniper21" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper21" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.037, 2.81849, 6.65658)
+player = NodePath("")
 
-[node name="Sniper22" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper22" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.037, 17.5264, 24.9244)
+player = NodePath("")
 
-[node name="Sniper23" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper23" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.386, 2.7571, 42.0698)
+player = NodePath("")
 
-[node name="Sniper24" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper24" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.386, 14.2853, 57.2072)
+player = NodePath("")
 
-[node name="Sniper25" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper25" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.386, 4.32554, 65.1051)
+player = NodePath("")
 
-[node name="Sniper26" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper26" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 120.525, -4.02954, 91.6199)
+player = NodePath("")
 
-[node name="Sniper27" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper27" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 128.167, -4.45806, 64.1317)
+player = NodePath("")
 
-[node name="Sniper28" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper28" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 141.42, -1.88691, 55.4635)
+player = NodePath("")
 
-[node name="Sniper29" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper29" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 168.237, -8.29898, 44.208)
+player = NodePath("")
 
-[node name="Sniper30" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper30" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 172.201, -18.5, 48.1973)
+player = NodePath("")
 
-[node name="Sniper31" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper31" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 85.133, -6.09962, 87.7355)
+player = NodePath("")
 
-[node name="Sniper32" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper32" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.8683, -11.6279, 87.7355)
+player = NodePath("")
 
-[node name="Sniper33" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper33" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.5687, -2.44782, -0.420998)
+player = NodePath("")
 
-[node name="Sniper34" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper34" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.5687, -6.72986, 67.2088)
+player = NodePath("")
 
-[node name="Sniper35" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper35" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64.5132, 9.02681, 67.2088)
+player = NodePath("")
 
-[node name="Sniper36" parent="." instance=ExtResource("2_w8owf")]
+[node name="Sniper36" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_w8owf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64.5132, 9.02681, 61.4099)
+player = NodePath("../Player")
+
+[node name="Player" parent="." node_paths=PackedStringArray("hud") instance=ExtResource("1_y876f")]
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, -0.357475, 0.5, 30.3535)
+hud = NodePath("../Control")

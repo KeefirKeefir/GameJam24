@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal died
+
 @onready var sniperShot = $SniperSound
 
 @export_category("Stats")
@@ -10,16 +12,21 @@ extends CharacterBody3D
 @export var downTime: float = 3 + randf_range(lrange.x, lrange.y)
 @export var spread = 15
 
+var isDead = false
+
 var playerSpotted = false
 
 var hitMarker: PackedScene = preload("res://scenes/hitLocMarker.tscn")
 
 var camCorpse: PackedScene = preload("res://scenes/camCorpse.tscn")
-@export var player: CharacterBody3D  # Player reference
+#@export var player: CharacterBody3D  # Player reference
 #var target: Camera3D
+#var Player1 = get_path_to($StaticBody3D)
+#@onready var player = get_node("Player1")
+#@onready var target = Player1.get_node("TwistPivot/PitchPivot/CameraController/Camera3D")
 
-@onready var target = player.get_node("TwistPivot/PitchPivot/CameraController/Camera3D")
-#@onready var player = get_tree().get_nodes_in_group("Player")[0]  
+@onready var player = get_tree().get_nodes_in_group("Player")[0]  
+@onready var target = player.get_node("TwistPivot/PitchPivot/Camera3D")
 
 
 var elapsedTime: float = 0.0  # Variable to store the accumulated delta (time passed)
@@ -118,25 +125,29 @@ func find_player_position() -> Vector3:
 
 # Function to handle character death
 func die():
+	emit_signal("died")
+	isDead = true
 	print("Character died")
-	player.switchGun()
+	#player.switchGun()
 	spawnCorpse()
 	queue_free()  # Remove the character from the scene
 
 # Function to take damage
 func takeDmg(collider, amount: int):
-	print('Collider: ', collider.name if collider else "None")
-	print("Taking damage: ", amount)
-	health -= amount
-	print("Health remaining: ", health)
-	if health <= 0:
-		health = 0
-		print("Health depleted, character will die")
-		die()
+	if isDead == false:
+		print('Collider: ', collider.name if collider else "None")
+		print("Taking damage: ", amount)
+		health -= amount
+		print("Health remaining: ", health)
+		if health <= 0:
+			health = 0
+			print("Health depleted, character will die")
+			die()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#var player = get_node("../TwistPivot/PitchPivot/CameraController/Camera3D")
+	
 	print(player)
 	
 	print(target)
