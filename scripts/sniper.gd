@@ -67,16 +67,17 @@ func timer(delta):
 	
 func spawnCorpse():
 	var corpseInst = camCorpse.instantiate()  # Create an instance of the marker scene
-	corpseInst.global_transform.origin = self.position  # Set the position of the marker
-	corpseInst.rotation = self.rotation
 	var world = get_tree().get_root()
 	world.add_child(corpseInst)
+	corpseInst.global_transform.origin = self.position  # Set the position of the marker
+	corpseInst.rotation = self.rotation
 	
 func spawnHitMarker(position: Vector3, parent):
 	var hitMarkerInst = hitMarker.instantiate()  # Create an instance of the marker scene
-	hitMarkerInst.global_transform.origin = position  # Set the position of the marker
+	
 	var world = get_tree().get_root()
 	world.add_child(hitMarkerInst)
+	hitMarkerInst.global_transform.origin = position  # Set the position of the marker
 
 
 # Function to perform shooting logic

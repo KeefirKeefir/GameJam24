@@ -2,8 +2,6 @@ extends CharacterBody3D
 #game Settings
 @export var shiftJumpEnabled := false
 #sounds
-@onready var pistolShot = $PistolSound
-@onready var shotgunShot = $ShotgunSound
 @onready var swapSound = $swapSound
 @onready var dink = $Dink
 #player nodes

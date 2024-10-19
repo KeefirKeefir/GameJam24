@@ -2,6 +2,8 @@ extends Node3D
 
 #example weapon
 
+@onready var pistolShot = $PistolSound
+
 var dmg = 20
 var range = 100
 var ammoMax :int = 8
@@ -58,6 +60,8 @@ func shoot():
 		delay0 = delay
 		state = stateE.firing
 		self.rotation.x = deg_to_rad(30)
+		pistolShot.pitch_scale = randf_range(0.9, 1.1)
+		pistolShot.play()
 	elif ammo <= 0 and state != stateE.reloading:
 		reload()
 

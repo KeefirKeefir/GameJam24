@@ -11,9 +11,10 @@ func _ready():
 
 func spawnHitMarker(position: Vector3, parent):
 	var hitMarkerInst = hitMarker.instantiate()  # Create an instance of the marker scene
-	hitMarkerInst.global_transform.origin = position  # Set the position of the marker
+	
 	var world = get_tree().get_root()
 	world.add_child(hitMarkerInst)  # Add the marker to the scene tree
+	hitMarkerInst.global_transform.origin = position  # Set the position of the marker
 	
 func castHitscan(rangeInt, dmgInt:int, spreadAngle: Vector2):
 	cameraDir = -camera.global_transform.basis.z.normalized()

@@ -1,5 +1,6 @@
 extends Node3D
 
+@onready var shotgunShot = $ShotgunSound
 
 var canFire = true
 var dmg = 5
@@ -40,6 +41,8 @@ func shoot():
 		delay0 = delay
 		canFire = false
 		self.rotation.x = deg_to_rad(30)
+		shotgunShot.pitch_scale = randf_range(0.9, 1.1)
+		shotgunShot.play()
 	else:
 		pass
 
