@@ -7,13 +7,13 @@ var hitMarker: PackedScene = preload("res://scenes/hitLocMarker.tscn")
 var camera
 var cameraDir
 
-func spawnHitMarker(position: Vector3, parent):
+func spawnHitMarker(position: Vector3, parent) -> void:
 	var hitMarkerInst = hitMarker.instantiate()  # Create an instance of the marker scene
 	hitMarkerInst.global_transform.origin = position  # Set the position of the marker
 	var world = get_tree().get_root()
 	world.add_child(hitMarkerInst)  # Add the marker to the scene tree
 	
-func castHitscan(rangeInt, dmgInt:int, spreadAngle: Vector2):
+func castHitscan(rangeInt, dmgInt:int, spreadAngle: Vector2) -> void:
 	cameraDir = -camera.global_transform.basis.z.normalized()
 	#angle math
 	var axisH = camera.global_transform.basis.y.normalized()

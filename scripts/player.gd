@@ -2,20 +2,20 @@ extends CharacterBody3D
 #game Settings
 @export var shiftJumpEnabled := false
 #sounds
-@onready var swapSound = $swapSound
-@onready var dink = $Dink
+@onready var swapSound := $swapSound
+@onready var dink := $Dink
 #player nodes
-@onready var gunNode = get_node("TwistPivot/PitchPivot/Camera3D/socket/MeshInstance3D2")
+@onready var gunNode := get_node("TwistPivot/PitchPivot/Camera3D/socket/MeshInstance3D2")
 @onready var movNode := $Movement
 @onready var camNode := $TwistPivot/PitchPivot/Camera3D
 #other nodes
 @export var hud: CanvasLayer
-@onready var hpBar = hud.get_node("infoBox/hpVisual")
-@onready var hpText = hud.get_node("infoBox/hpVal")
+@onready var hpBar := hud.get_node("infoBox/hpVisual")
+@onready var hpText := hud.get_node("infoBox/hpVal")
 
 #player stats
 var gravity := 40  # Default gravity value
-@export var health: int = 100
+@export var health : int = 100
 
 #other player values
 var shifting := false
@@ -28,7 +28,7 @@ var parryTime0 := 0.0
 
 
 #ready
-func _ready():
+func _ready() -> void:
 	gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	movNode.player = self
@@ -37,7 +37,7 @@ func _ready():
 		#enemy.died.connect(switchGun)
 
 #timers
-func parryTimer(delta):
+func parryTimer(delta:float) -> void:
 	parryTime0 -= delta
 	if parryTime0 <= 0.0 and parrying == true:
 		parrying = false
@@ -46,21 +46,21 @@ func parryTimer(delta):
 		pass
 
 
-func dashTimer(delta):
+func dashTimer(delta:float) -> void:
 	dashTime0 -= delta
 	if dashTime0 <= 0:
 			dashing = false
 	else:
 		pass
 
-func die():
+func die() -> void:
 	get_tree().quit()
 	print("player dead")
 
-func get_input():
+func get_input() -> void:
 	return Input.get_vector("left", "right", "forward", "back")
 
-func takeDmg(collider, amount: int):
+func takeDmg(collider: Node, amount: int) -> void:
 	if parrying == false:
 		health -= amount
 		print(hpBar.value)
@@ -79,8 +79,8 @@ func takeDmg(collider, amount: int):
 
 #main functions
 
-func _physics_process(delta:float): #for consistent timings
-	var input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+func _physics_process(delta:float) -> void: #for consistent timings
+	var input_vector := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	# Apply movement and gravity through Movement node
 	movNode.apply_gravity(gravity, delta)
 	movNode.apply_movement(input_vector)
@@ -90,7 +90,7 @@ func _physics_process(delta:float): #for consistent timings
 	parryTimer(delta)
 	dashTimer(delta)
 
-func _process(delta: float): #for more precise timings
+func _process(delta: float) -> void: #for more precise timings
 	
 	if Input.is_action_pressed("shift"):
 		shifting = true
@@ -109,7 +109,7 @@ func _process(delta: float): #for more precise timings
 		dashing = true
 		dashTime0 = dashTime
 		
-func _unhandled_input(event: InputEvent):
+func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("parry") and parryTime0 <= 0.0:
 		parrying = true

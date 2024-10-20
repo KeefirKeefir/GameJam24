@@ -1,14 +1,14 @@
 extends Node3D
 
 #@onready var pistol = get_parent().get_node("TwistPivot/PitchPivot/Camera3D/socket/glowingGun")
-@onready var socket = get_parent().get_node("TwistPivot/PitchPivot/Camera3D/socket")
+@onready var socket := get_parent().get_node("TwistPivot/PitchPivot/Camera3D/socket")
 #these hold a reference to the gun's node
-var primSlot = null
-var secSlot = null
-var altSlot = null
-var equippedSlot
+var primSlot : Object = null
+var secSlot : Object = null
+var altSlot : Object = null
+var equippedSlot : Object
 
-var paths = {
+var paths := {
 	glowingGun = "res://scenes/glowingGun.tscn",
 	shotrifle = "res://scenes/shotrifle.tscn"
 }
@@ -17,7 +17,7 @@ func _ready() -> void:
 	primSlot = loadGun(primSlot, paths.glowingGun)
 	secSlot = loadGun(secSlot, paths.shotrifle)
 
-func equipGun(gunSlot):
+func equipGun(gunSlot:Object) -> void:
 	if equippedSlot != null:
 		equippedSlot.visible = false
 	equippedSlot = gunSlot
@@ -25,8 +25,8 @@ func equipGun(gunSlot):
 	equippedSlot.visible = true
 	
 
-func loadGun(gunSlot: Node, toLoad: String): #done at the beginning of the game, toLoad is chosen by player
-	var loadedGun = load(toLoad)
+func loadGun(gunSlot: Node, toLoad: String) -> Object: #done at the beginning of the game, toLoad is chosen by player
+	var loadedGun := load(toLoad)
 	if gunSlot == null:
 		gunSlot = loadedGun.instantiate()
 		equipGun(gunSlot)
@@ -48,7 +48,7 @@ func _input(event: InputEvent) -> void:
 		equipGun(altSlot)
 
 
-func _unhandled_input(event: InputEvent):
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("shoot"):
 		#get_tree().get_nodes_in_group("guns")[0]
 		equippedSlot.shoot()

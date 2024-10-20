@@ -4,20 +4,20 @@ extends Node3D
 @export var jump_speed := 15
 var velocity : Vector3 = Vector3()
 var player : CharacterBody3D 
-var camera: Camera3D
+var camera : Camera3D
 
-func _ready():
+func _ready() -> void:
 	player = get_parent() as CharacterBody3D
 	camera = get_node("../TwistPivot/PitchPivot/Camera3D")
 
-func apply_movement(input_vector: Vector2):
-	var forward = camera.global_transform.basis.z
+func apply_movement(input_vector: Vector2) -> void:
+	var forward := camera.global_transform.basis.z
 	forward.y = 0
 	forward = forward.normalized()
-	var right = camera.global_transform.basis.x
+	var right := camera.global_transform.basis.x
 	right.y = 0
 	right = right.normalized()
-	var movement_dir = (right * input_vector.x + forward * input_vector.y).normalized()
+	var movement_dir := (right * input_vector.x + forward * input_vector.y).normalized()
 
 	if player.dashing == true:
 		if (movement_dir.x != 0 or movement_dir.z != 0):
@@ -35,15 +35,15 @@ func apply_movement(input_vector: Vector2):
 		velocity.z = 0
 
 
-func apply_gravity(gravity: float, delta: float):
+func apply_gravity(gravity: float, delta: float) -> void:
 	velocity.y -= gravity * delta
 	
 
-func jump():
+func jump() -> void:
 	if player.is_on_floor():
 		velocity.y = jump_speed
 
 	
-func update_movement():
+func update_movement() -> void:
 	player.velocity = velocity  # Set player velocity
 	player.move_and_slide()  # No arguments needed
