@@ -1,0 +1,172 @@
+[gd_scene load_steps=7 format=3 uid="uid://cxrh5xq5sjl6b"]
+
+[ext_resource type="Script" path="res://scripts/fps_meter.gd" id="1_dj4f1"]
+[ext_resource type="StyleBox" uid="uid://dv47jtegpx5wh" path="res://resources/highlight.tres" id="1_wnsp0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xccgs"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4qbt"]
+bg_color = Color(0.633778, 0.0232757, 0.0487958, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21tpx"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_07qm4"]
+bg_color = Color(0.136255, 0.359514, 0.46854, 1)
+
+[node name="Hud" type="Control" groups=["HUD"]]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="health" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 514.0
+offset_right = 287.0
+offset_bottom = 609.0
+
+[node name="hpBar" type="ProgressBar" parent="health"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_xccgs")
+theme_override_styles/fill = SubResource("StyleBoxFlat_r4qbt")
+value = 100.0
+show_percentage = false
+
+[node name="hpNum" type="Label" parent="health"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 34.0
+offset_right = 114.0
+offset_bottom = 102.0
+theme_override_font_sizes/font_size = 49
+text = "100"
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="health"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = -9.0
+offset_right = 107.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 49
+text = "HP"
+vertical_alignment = 1
+
+[node name="gun" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 399.0
+offset_right = 286.0
+offset_bottom = 494.0
+
+[node name="gunBar" type="ProgressBar" parent="gun"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_21tpx")
+theme_override_styles/fill = SubResource("StyleBoxFlat_07qm4")
+value = 100.0
+show_percentage = false
+
+[node name="gunNum" type="Label" parent="gun"]
+layout_mode = 0
+offset_top = 34.0
+offset_right = 114.0
+offset_bottom = 102.0
+theme_override_font_sizes/font_size = 49
+text = "100"
+vertical_alignment = 1
+
+[node name="gunName" type="Label" parent="gun"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = -9.0
+offset_right = 107.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 49
+text = "AMMO"
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 952.0
+offset_top = 242.0
+offset_right = 1052.0
+offset_bottom = 272.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+theme_override_styles/panel = ExtResource("1_wnsp0")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 15.0
+offset_right = 200.0
+offset_bottom = 142.0
+text = "LOOK: mouse
+MOVE: WASD
+JUMP: space
+SHOOT: lmb
+PARRY: F"
+
+[node name="Panel" type="Panel" parent="Label"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = ExtResource("1_wnsp0")
+
+[node name="FPSMeter" type="Label" parent="."]
+layout_mode = 0
+offset_left = 133.0
+offset_right = 173.0
+offset_bottom = 23.0
+text = "FPS: "
+script = ExtResource("1_dj4f1")
+
+[node name="HTargets" type="VBoxContainer" parent="."]
+layout_direction = 3
+layout_mode = 0
+offset_left = 75.0
+offset_top = 2.0
+offset_right = 198.0
+offset_bottom = 42.0
+scale = Vector2(1.41545, 1)
+
+[node name="Label" type="Label" parent="HTargets"]
+layout_mode = 2
+text = "Targets
+"
+
+[node name="HTarget" type="Container" parent="."]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 210.0
+offset_right = 535.0
+offset_bottom = 250.0
+
+[node name="Name" type="Label" parent="HTarget"]
+layout_mode = 2
+
+[node name="Hacks" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 158.0
+offset_right = 59.0
+offset_bottom = 198.0

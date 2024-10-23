@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bf0sdbnv801ae"]
+
+[ext_resource type="Script" path="res://scenes/hackOnHud.gd" id="1_tlsrx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ma2mk"]
+bg_color = Color(0.178829, 0.616739, 0.995438, 1)
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+
+[node name="HackName" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "run exampleprogram.exe"
+script = ExtResource("1_tlsrx")
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ma2mk")

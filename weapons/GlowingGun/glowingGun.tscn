@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cnyvjf4cml64b"]
 
-[ext_resource type="ArrayMesh" uid="uid://c20vteratwg3b" path="res://assets/gcpistol.obj" id="1_bfg3j"]
-[ext_resource type="Script" path="res://scripts/glowing_gun.gd" id="1_etax5"]
-[ext_resource type="AudioStream" uid="uid://c40qd821co8f3" path="res://audio/pistolSound.wav" id="3_1t405"]
+[ext_resource type="Script" path="res://weapons/GlowingGun/glowing_gun.gd" id="1_ynwvf"]
+[ext_resource type="ArrayMesh" uid="uid://c20vteratwg3b" path="res://assets/gcpistol.obj" id="2_sahkh"]
+[ext_resource type="AudioStream" uid="uid://c40qd821co8f3" path="res://audio/pistolSound.wav" id="3_0l52f"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n03xs"]
 emission_enabled = true
@@ -10,13 +10,13 @@ emission = Color(1, 1, 1, 1)
 emission_energy_multiplier = 10.0
 
 [node name="glowingGun" type="Node3D" groups=["guns"]]
-script = ExtResource("1_etax5")
+script = ExtResource("1_ynwvf")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-2.18557e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.18557e-09, 0, 0, 0)
-mesh = ExtResource("1_bfg3j")
+mesh = ExtResource("2_sahkh")
 surface_material_override/0 = SubResource("StandardMaterial3D_n03xs")
 
 [node name="PistolSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_1t405")
+stream = ExtResource("3_0l52f")
 volume_db = -10.0

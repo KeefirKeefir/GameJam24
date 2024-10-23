@@ -2,7 +2,7 @@ extends Node3D
 #const hitMarker = preload("hitLocMarker.tscn")
 var hitMarker:PackedScene = preload("res://scenes/hitLocMarker.tscn")
 
-@onready var camera := get_parent().get_node("TwistPivot/PitchPivot/Camera3D")
+@onready var camera := get_parent().get_node("XPivot/Camera3D")
 var cameraDir:Vector3
 
 func _ready() -> void:
@@ -37,7 +37,8 @@ func castHitscan(range:int, dmg:int, spreadAngle: Vector2) -> void:
 	var rayOrigin:Vector3= camera.project_ray_origin(center)
 	var rayEnd := rayOrigin + rayDir * range
 	
-	var newRay := PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd)
+	var newRay := PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd, 2)
+	newRay.collide_with_areas = true
 	var intersection := get_world_3d().direct_space_state.intersect_ray(newRay)
 	
 	if not intersection.is_empty():
@@ -45,8 +46,7 @@ func castHitscan(range:int, dmg:int, spreadAngle: Vector2) -> void:
 		spawnHitMarker(intersection.position)
 		if hitObject.has_method("takeDmg"):
 			print("hit: ",hitObject)
-			hitObject.takeDmg(hitObject, dmg)
-		
+			hitObject.takeDmg(hitObject, dmg, intersection.shape)
 		print(hitObject.name)
 	else:
 		print("nothing")

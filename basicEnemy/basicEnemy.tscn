@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3 uid="uid://bh05v21rcjugj"]
+
+[ext_resource type="Script" path="res://basicEnemy/basicEnemy.gd" id="1_w65my"]
+[ext_resource type="ArrayMesh" uid="uid://bfc4434tj4suk" path="res://assets/gcCamDrone.obj" id="2_36d1n"]
+[ext_resource type="Texture2D" uid="uid://p5yuqqub3yfu" path="res://assets/camGrid2.png" id="3_67id2"]
+[ext_resource type="AudioStream" uid="uid://cpfa4fybbcrub" path="res://audio/sniperSound.wav" id="4_88obd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nsyta"]
+albedo_texture = ExtResource("3_67id2")
+metallic = 1.0
+metallic_texture = ExtResource("3_67id2")
+
+[sub_resource type="SphereMesh" id="SphereMesh_q5m2h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yoosa"]
+transparency = 1
+albedo_color = Color(0.121569, 0.133333, 1, 0.843137)
+emission_enabled = true
+emission = Color(0.00365794, 0.157181, 0.718027, 1)
+emission_energy_multiplier = 12.54
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1mm0s"]
+transparency = 1
+albedo_color = Color(0.121569, 0.133333, 1, 0.843137)
+emission_enabled = true
+emission = Color(0.293337, 0.506328, 1, 1)
+emission_energy_multiplier = 6.28
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a2y1v"]
+radius = 1.5
+height = 5.0
+
+[node name="BasicEnemy" type="CharacterBody3D"]
+collision_layer = 7
+collision_mask = 0
+script = ExtResource("1_w65my")
+
+[node name="CamGun" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, -0.858823, 1.42221, 0)
+mesh = ExtResource("2_36d1n")
+skeleton = NodePath("../Hitbox")
+surface_material_override/0 = SubResource("StandardMaterial3D_nsyta")
+
+[node name="signal" type="MeshInstance3D" parent="CamGun"]
+transform = Transform3D(1.45, 0, 0, 0, 1.45, 0, 0, 0, 1.45, -1.224, -1.944, 6.778)
+visible = false
+mesh = SubResource("SphereMesh_q5m2h")
+surface_material_override/0 = SubResource("StandardMaterial3D_yoosa")
+
+[node name="signal2" type="MeshInstance3D" parent="CamGun"]
+transform = Transform3D(1.45, 0, 0, 0, 1.45, 0, 0, 0, 1.45, -1.224, -1.944, 6.778)
+visible = false
+mesh = SubResource("SphereMesh_q5m2h")
+surface_material_override/0 = SubResource("StandardMaterial3D_1mm0s")
+
+[node name="Hitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(-0.7, -1.05697e-07, 4.62017e-15, 0, -3.0598e-08, -0.7, 1.05697e-07, -0.7, 3.0598e-08, -0.500884, -0.135736, -0.261389)
+shape = SubResource("CapsuleShape3D_a2y1v")
+
+[node name="SniperSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_88obd")
+volume_db = -10.0

@@ -1,0 +1,75 @@
+[gd_scene load_steps=14 format=3 uid="uid://ddn3gi1k5ock8"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_wxbg3"]
+[ext_resource type="Script" path="res://scripts/shoot_comp.gd" id="2_83cah"]
+[ext_resource type="Script" path="res://scripts/camera_control.gd" id="2_bbeqo"]
+[ext_resource type="Script" path="res://scripts/camera_raycast.gd" id="4_nuu8l"]
+[ext_resource type="Script" path="res://scripts/gun_handler.gd" id="4_tf13n"]
+[ext_resource type="Script" path="res://scripts/movement.gd" id="4_vms48"]
+[ext_resource type="PackedScene" uid="uid://bkwu42a4cxmea" path="res://scenes/gunstetstscn.tscn" id="5_pesc3"]
+[ext_resource type="ArrayMesh" uid="uid://4rqva555ov36" path="res://assets/trainParts/gcWindow.obj" id="6_voldu"]
+[ext_resource type="AudioStream" uid="uid://cub4r1qkyrrr6" path="res://audio/583079__breviceps__file-select-metallic-wet-hollow.wav" id="9_mdjvc"]
+[ext_resource type="AudioStream" uid="uid://wtummj1l2pp4" path="res://audio/dink.wav" id="10_nyx0g"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_psx23"]
+
+[sub_resource type="PlaceholderMesh" id="PlaceholderMesh_1b80v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r72x2"]
+albedo_color = Color(0.359069, 0.359069, 0.359069, 1)
+metallic = 0.23
+metallic_specular = 0.81
+roughness = 0.61
+emission_energy_multiplier = 2.52
+rim_tint = 0.49
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("1_wxbg3")
+
+[node name="ColliderBody" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_psx23")
+
+[node name="Movement" type="Node3D" parent="."]
+script = ExtResource("4_vms48")
+
+[node name="ShootComp" type="Node3D" parent="."]
+script = ExtResource("2_83cah")
+
+[node name="gunHandler" type="Node3D" parent="."]
+script = ExtResource("4_tf13n")
+
+[node name="TwistPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.74604, 0)
+script = ExtResource("2_bbeqo")
+
+[node name="PitchPivot" type="Node3D" parent="TwistPivot"]
+
+[node name="Camera3D" type="Camera3D" parent="TwistPivot/PitchPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.666667, 0.00033926, 0, -0.00050889, 1, 0, 0, 0)
+fov = 90.0
+script = ExtResource("4_nuu8l")
+
+[node name="socket" type="MeshInstance3D" parent="TwistPivot/PitchPivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 1.16415e-10, 0, 5.82077e-11, 1, 0.4, -0.25, -0.7)
+mesh = SubResource("PlaceholderMesh_1b80v")
+
+[node name="MeshInstance3D2" parent="TwistPivot/PitchPivot/Camera3D/socket" instance=ExtResource("5_pesc3")]
+transform = Transform3D(-2.18557e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.18557e-09, 0, 0, 0)
+visible = false
+skeleton = NodePath("../..")
+
+[node name="shield" type="MeshInstance3D" parent="TwistPivot/PitchPivot/Camera3D/socket"]
+unique_name_in_owner = true
+transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, -0.953894, -0.783649, -0.22008)
+mesh = ExtResource("6_voldu")
+surface_material_override/0 = SubResource("StandardMaterial3D_r72x2")
+
+[node name="swapSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_mdjvc")
+volume_db = 7.0
+
+[node name="Dink" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_nyx0g")
+volume_db = 5.0

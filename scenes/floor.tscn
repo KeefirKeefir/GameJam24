@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://7gjhg8avnvpg"]
 
-[ext_resource type="PackedScene" uid="uid://ddn3gi1k5ock8" path="res://scenes/player.tscn" id="1_y876f"]
+[ext_resource type="PackedScene" uid="uid://ddn3gi1k5ock8" path="res://Player/player.tscn" id="1_y876f"]
 [ext_resource type="PackedScene" uid="uid://yqcweb8jrn2k" path="res://scenes/sniper.tscn" id="2_w8owf"]
-[ext_resource type="PackedScene" uid="uid://cxrh5xq5sjl6b" path="res://scenes/menu.tscn" id="3_1y4ew"]
+[ext_resource type="PackedScene" uid="uid://cxrh5xq5sjl6b" path="res://scenes/Hud.tscn" id="3_1y4ew"]
 [ext_resource type="PackedScene" uid="uid://dnuy38dexycmt" path="res://scenes/camCorpse.tscn" id="4_tgvj3"]
 [ext_resource type="PackedScene" uid="uid://d06bexrg8n6y5" path="res://scenes/train.tscn" id="5_xx65l"]
 
@@ -23,9 +23,8 @@ glow_enabled = true
 [node name="StaticBody3D" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
-[node name="Player" parent="." node_paths=PackedStringArray("hud") instance=ExtResource("1_y876f")]
+[node name="Player" parent="." instance=ExtResource("1_y876f")]
 transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, -0.357475, 0.5, 30.3535)
-hud = NodePath("../Control")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ejyda")

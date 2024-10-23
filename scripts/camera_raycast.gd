@@ -1,8 +1,11 @@
 extends Camera3D
 
+#unused script
+
 var rangeInt := 200
 #const hitMarker = preload("hitLocMarker.tscn")
 var hitMarker: PackedScene = preload("res://scenes/hitLocMarker.tscn")
+
 
 var camera
 var cameraDir
@@ -34,10 +37,10 @@ func castHitscan(rangeInt, dmgInt:int, spreadAngle: Vector2) -> void:
 	var rayEnd = rayOrigin + rayDir * rangeInt
 	
 	var newRay = PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd)
-	var intersection = get_world_3d().direct_space_state.intersect_ray(newRay)
+	var intersection := get_world_3d().direct_space_state.intersect_ray(newRay)
 	
 	if not intersection.is_empty():
-		var hitObject = intersection.collider
+		var hitObject :Node= intersection.collider
 		spawnHitMarker(intersection.position, hitObject)
 		if hitObject.has_method("takeDmg"):
 			print("hit: ",hitObject)

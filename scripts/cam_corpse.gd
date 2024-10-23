@@ -7,7 +7,7 @@ func _ready() -> void:
 	self.center_of_mass.y = randf_range(-10, 10)
 	self.center_of_mass.z = randf_range(-10, 10)
 
-var lifeTime0 := 0
+var lifeTime0 := 0.0
 
 func timer(delta:float) -> void:
 	lifeTime0 += delta

@@ -4,18 +4,22 @@ extends Node3D
 
 @onready var pistolShot := $PistolSound
 
+signal onAmmo
+
+var gunName:String = "beret"
+
 var dmg := 20
 var range := 100
 var ammoMax := 8
 var ammo := 8
 var spread := 1.0
 
-@export var reloadTime := 2.0
+@export var reloadTime := 1.5
 var reloadTime0 := 0.0
 @export var delay := 0.2
 var delay0 := 0.0
 
-enum stateE {ready, firing, reloading}
+enum stateE {ready, firing, reloading, holstered}
 var state := stateE.ready
 
 @onready var player := get_tree().get_nodes_in_group("Player")[0]  
@@ -39,7 +43,20 @@ func delayTimer(delta:float) -> void:
 			self.rotation.z = deg_to_rad(0)
 			state = stateE.ready
 			ammo = ammoMax
+			onAmmo.emit()
 
+func holster():
+	self.rotation.z = deg_to_rad(0)
+	state = stateE.holstered
+	visible = false
+
+func equip():
+	state = stateE.ready
+	onAmmo.emit()
+	visible = true
+
+func getAmmo() -> int:
+	return ammo
 
 
 func reload() -> void:
@@ -51,12 +68,14 @@ func reload() -> void:
 
 func shoot() -> void:
 	if state == stateE.ready and ammo > 0:
+		
 		var spreadRad := (Vector2(
 			deg_to_rad(randf_range(-spread, spread)), 
 			deg_to_rad(randf_range(-spread, spread))
 			))
 		shootComp.castHitscan(range, dmg , spreadRad)
 		ammo -= 1
+		onAmmo.emit()
 		delay0 = delay
 		state = stateE.firing
 		self.rotation.x = deg_to_rad(30)

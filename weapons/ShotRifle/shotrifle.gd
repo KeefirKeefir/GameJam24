@@ -2,10 +2,13 @@ extends Node3D
 
 @onready var shotgunShot := $ShotgunSound
 
+signal onAmmo
+
 var canFire := true
 var dmg := 5
 var range := 30
 var ammo := 4
+var ammoMax := 4
 var spread := 5.0
 var pelletCount := 8
 
@@ -30,6 +33,20 @@ func delayTimer(delta:float) -> void:
 	else:
 		pass
 
+func holster() -> void:
+	visible = false
+
+func equip() -> void:
+	visible = true
+	onAmmo.emit()
+
+func reload() -> void:
+	ammo = ammoMax
+	onAmmo.emit()
+
+func getAmmo() -> int:
+	return ammo
+
 func shoot() -> void:
 	if canFire:
 		for i in range(pelletCount):
@@ -43,6 +60,8 @@ func shoot() -> void:
 		self.rotation.x = deg_to_rad(30)
 		shotgunShot.pitch_scale = randf_range(0.9, 1.1)
 		shotgunShot.play()
+		ammo -= 1
+		onAmmo.emit()
 	else:
 		pass
 

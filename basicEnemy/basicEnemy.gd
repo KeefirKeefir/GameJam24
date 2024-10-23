@@ -33,6 +33,8 @@ var elapsedTime: float = 0.0  # Variable to store the accumulated delta (time pa
 
 @export var lrange:Vector2 = Vector2(-2,3)
 
+var hacks:Array[String] = ["virus", "death", "varCorrupt"]
+
 func timer(delta:float) -> void:
 	elapsedTime += delta
 	

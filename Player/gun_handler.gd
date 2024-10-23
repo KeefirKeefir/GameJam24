@@ -1,30 +1,46 @@
 extends Node3D
 
+signal update(ammo:int)
+
+var ammo:int = 0
 #@onready var pistol = get_parent().get_node("TwistPivot/PitchPivot/Camera3D/socket/glowingGun")
-@onready var socket := get_parent().get_node("TwistPivot/PitchPivot/Camera3D/socket")
+@onready var socket := get_parent().get_node("XPivot/Camera3D/socket")
 #these hold a reference to the gun's node
 var primSlot : Object = null
 var secSlot : Object = null
 var altSlot : Object = null
 var equippedSlot : Object
 
+
+@onready var hud := get_tree().get_nodes_in_group("HUD")[0]
+@onready var gunBar := hud.get_node("gun/gunBar")
+@onready var gunNum := hud.get_node("gun/gunNum")
+
+
 var paths := {
-	glowingGun = "res://scenes/glowingGun.tscn",
-	shotrifle = "res://scenes/shotrifle.tscn"
+	glowingGun = "res://weapons/GlowingGun/glowingGun.tscn",
+	shotrifle = "res://weapons/ShotRifle/shotrifle.tscn"
 }
 
 func _ready() -> void:
 	primSlot = loadGun(primSlot, paths.glowingGun)
 	secSlot = loadGun(secSlot, paths.shotrifle)
 
+func updateAmmo() -> void:
+	gunBar.max_value = float(equippedSlot.ammoMax)
+	gunBar.value = float(equippedSlot.ammo)
+	gunNum.text = str(equippedSlot.ammo)
+
 func equipGun(gunSlot:Object) -> void:
 	if equippedSlot != null:
-		equippedSlot.visible = false
+		equippedSlot.holster()
 	equippedSlot = gunSlot
-	print(equippedSlot)
-	equippedSlot.visible = true
+	if not equippedSlot.is_connected("onAmmo", updateAmmo):
+		equippedSlot.onAmmo.connect(updateAmmo)
+	equippedSlot.equip()
 	
 
+	
 func loadGun(gunSlot: Node, toLoad: String) -> Object: #done at the beginning of the game, toLoad is chosen by player
 	var loadedGun := load(toLoad)
 	if gunSlot == null:
@@ -52,6 +68,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("shoot"):
 		#get_tree().get_nodes_in_group("guns")[0]
 		equippedSlot.shoot()
+
 	if event.is_action_pressed("reload"):
 		equippedSlot.reload()
  
