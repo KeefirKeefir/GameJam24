@@ -13,11 +13,14 @@ extends Node3D
 
 @onready var HackPanel := preload("res://scenes/hackOnHud.tscn")
 
+enum star {bob, store}
+
 var focPanel :Node = null
 
 var validEnemies : Array[Node] = []
 var allTargets: Array[Node] = []
 var target:Node = null
+var lastTarget:Node = null
 
 var hacking := false
 
@@ -50,7 +53,7 @@ func detectEnemies() -> void:
 		if distanceFromCenter < closest_distance:
 			closest_distance = distanceFromCenter
 			target = targetA
-				
+			
 	for targetA in allTargets:
 		var tLabel := Label.new()
 		tLabel.text = str(targetA.name)
@@ -60,28 +63,30 @@ func detectEnemies() -> void:
 		HTargetName.text = str(target.name)
 	else: 
 		HTargetName.text = ""
+	
 
 func hackMenu() -> void:
 	for label in HHacks.get_children():
 		HHacks.remove_child(label)
 		label.queue_free()
 		
-	for hack in target.hacks:
-		var tLabel := Label.new()
-		var panel = Panel.new()
-		
+	for dataHack in target.dataHacks:
 		var PanelInst := HackPanel.instantiate()
 		HHacks.add_child(PanelInst)
-		PanelInst.text = str(hack)
-		
+		PanelInst.myhack = dataHack
+		PanelInst.text = h.getName(dataHack)
+	
 	if HHacks.get_child_count() > 0:
 		HHacks.get_child(focused_index).highlight()
 
 func _process(delta: float) -> void:
 	detectEnemies()
-		
+	if target != lastTarget:
+		if target and hacking:
+			hackMenu()
+	target = lastTarget
 	if hacking == true:
-		Engine.time_scale = move_toward(Engine.time_scale, 0.01, 0.02)
+		Engine.time_scale = move_toward(Engine.time_scale, 0.3, 0.02)
 	else:
 		Engine.time_scale = move_toward(Engine.time_scale, 1.0, 0.02)
 	
@@ -115,10 +120,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("hack"):
 		hacking = true
-		if target:
-			hackMenu()
+
 	elif event.is_action_released("hack"):
+		if HHacks.get_child_count() > 0 and target:
+			target.recvHack(HHacks.get_child(focused_index).myhack) 
 		hacking = false
+		focused_index = 0
 		for label in HHacks.get_children():
 			HHacks.remove_child(label)
 			label.queue_free()
@@ -129,7 +136,6 @@ func focus_next_label() -> void:
 	focused_index = (focused_index + 1) % HHacks.get_child_count()
 	HHacks.get_child((focused_index - 1 + HHacks.get_child_count()) % HHacks.get_child_count()).deselect()
 	HHacks.get_child(focused_index).highlight()
-	#HHacks.get_child(focused_index).text = "false1"
 	
 
 func focus_previous_label() -> void:
@@ -138,7 +144,6 @@ func focus_previous_label() -> void:
 	focused_index = (focused_index - 1 + HHacks.get_child_count()) % HHacks.get_child_count()
 	HHacks.get_child((focused_index + 1) % HHacks.get_child_count()).deselect()
 	HHacks.get_child(focused_index).highlight()
-	#HHacks.get_child(focused_index).highlight()
 
 
 func hackState() -> void:

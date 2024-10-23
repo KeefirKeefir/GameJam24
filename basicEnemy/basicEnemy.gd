@@ -2,6 +2,10 @@ extends CharacterBody3D
 
 signal died
 
+var sysHacks:Array[h.sys] = []
+@export var dataHacks:Array[h.data] = [h.data.scramble_vars, h.data.ddos, h.data.corrupt]
+var controlHack:Array[h.control] = [h.control.self_destruct]
+
 @onready var sniperShot := $SniperSound
 
 @export_category("Stats")
@@ -49,7 +53,6 @@ func timer(delta:float) -> void:
 	if elapsedTime >= downTime and global_transform.origin.distance_to(target.global_transform.origin) <= range:
 			elapsedTime = 0
 			downTime = 3 + randf_range(lrange.x, lrange.y)
-			print(downTime)
 			getCollision(range, damage)
 			sniperShot.pitch_scale = randf_range(0.9, 1.1)
 			sniperShot.play()
@@ -99,7 +102,6 @@ func getCollision(range:int, dmg:int) -> void:
 		var hitObject:Object = intersection.collider
 		spawnHitMarker(intersection.position)
 		if hitObject.has_method("takeDmg"):
-			print("hit: ",hitObject)
 			hitObject.takeDmg(hitObject, dmg, intersection.shape)
 		
 	else:
@@ -129,7 +131,6 @@ func find_player_position() -> Vector3:
 func die() -> void:
 	emit_signal("died")
 	isDead = true
-	print("Character died")
 	#player.switchGun()
 	spawnCorpse()
 	queue_free()  # Remove the character from the scene
@@ -138,25 +139,19 @@ func die() -> void:
 #shape int is an index that corresponds to a hitbox, body, crit, etc
 func takeDmg(collider:Node, amount: int, shape: int) -> void:
 	if isDead == false:
-		print('Collider: ', collider.name if collider else "None")
-		print("Taking damage: ", amount)
+
 		health -= amount
-		print("Health remaining: ", health)
+
 		if health <= 0:
 			health = 0
-			print("Health depleted, character will die")
+
 			die()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#var player = get_node("../TwistPivot/PitchPivot/CameraController/Camera3D")
-	
-	print(player)
-	
-	print(target)
-	print("Node ready")
-	
-	print(player.position)
+	pass
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -167,3 +162,12 @@ func _process(delta: float) -> void:
 	
 	# Optional logic to find the player and react
 	
+
+func recvHack(hack):
+	match hack:
+		h.data.scramble_vars:
+			print("var scramble")
+		h.data.ddos:
+			print("ddossed")
+		h.data.corrupt:
+			print("corrupted")

@@ -27,12 +27,15 @@ environment = SubResource("Environment_ejyda")
 
 [node name="BasicEnemy" parent="." instance=ExtResource("5_xglbj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.1765, 4.1583, 16.8329)
+dataHacks = Array[int]([0, 1])
 
 [node name="BasicEnemy2" parent="." instance=ExtResource("5_xglbj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88.8878, 5.83221, 34.0112)
+dataHacks = Array[int]([0])
 
 [node name="BasicEnemy3" parent="." instance=ExtResource("5_xglbj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.3209, 5.53081, 21.059)
+dataHacks = Array[int]([1, 2])
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
