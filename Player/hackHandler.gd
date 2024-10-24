@@ -31,16 +31,13 @@ func detectEnemies() -> void:
 	
 	for enemy in validEnemies:
 		var onScreenPos :Vector2 = Cam.unproject_position(enemy.position)
-		
 		var distanceFromCenter = center.distance_to(onScreenPos)
 		if distanceFromCenter <= 150.0 and enemy not in allTargets:
 			allTargets.append(enemy)
 		elif distanceFromCenter >= 150.0 and enemy in allTargets:
 			allTargets.erase(enemy)
 	
-	
 	var closest_distance: float = INF
-	
 	for targetA in allTargets:
 		var onScreenPos :Vector2 = Cam.unproject_position(targetA.position)
 		var distanceFromCenter = center.distance_to(onScreenPos)
@@ -49,7 +46,6 @@ func detectEnemies() -> void:
 			target = targetA
 			if hacking:
 				hackMenu()
-			
 			
 	for targetA in allTargets:
 		var tLabel := Label.new()
@@ -72,7 +68,7 @@ func hackMenu() -> void:
 		HHacks.remove_child(label)
 		label.queue_free()
 	
-	if target:
+	if target and hacking:
 		for dataHack in target.dataHacks:
 			var PanelInst := HackPanel.instantiate()
 			HHacks.add_child(PanelInst)
@@ -81,7 +77,7 @@ func hackMenu() -> void:
 	
 	if focused_index > HHacks.get_child_count() - 1:
 		focused_index = 0
-	elif HHacks.get_child_count() > 0:
+	if HHacks.get_child_count() > 0:
 		HHacks.get_child(focused_index).highlight()
 	#if target == null:
 		#for label in HHacks.get_children():
@@ -134,9 +130,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			target.recvHack(HHacks.get_child(focused_index).myhack) 
 		hacking = false
 		focused_index = 0
-		for label in HHacks.get_children():
-			HHacks.remove_child(label)
-			label.queue_free()
+		hackMenu()
 	
 func focus_next_label() -> void:
 	if HHacks.get_child_count() == 0:
