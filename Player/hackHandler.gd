@@ -6,16 +6,8 @@ extends Node3D
 @onready var HTargetName := Hud.get_node("HTarget/Name")
 @onready var HHacks := Hud.get_node("Hacks")
 
-#@onready var highlight := load("res://resources/highlight.tres")
-@onready var themePanel :Panel= Hud.get_node("Panel")
-@onready var styleBox: StyleBoxFlat = themePanel.get_theme_stylebox("panel")
-@onready var highlight: StyleBoxFlat = themePanel.get_theme_stylebox("panel").duplicate()
-
 @onready var HackPanel := preload("res://scenes/hackOnHud.tscn")
 
-enum star {bob, store}
-
-var focPanel :Node = null
 
 var validEnemies : Array[Node] = []
 var allTargets: Array[Node] = []
@@ -36,6 +28,7 @@ func detectEnemies() -> void:
 		HTargets.remove_child(label)
 		label.queue_free()
 	
+	
 	for enemy in validEnemies:
 		var onScreenPos :Vector2 = Cam.unproject_position(enemy.position)
 		
@@ -44,7 +37,8 @@ func detectEnemies() -> void:
 			allTargets.append(enemy)
 		elif distanceFromCenter >= 150.0 and enemy in allTargets:
 			allTargets.erase(enemy)
-			
+	
+	
 	var closest_distance: float = INF
 	
 	for targetA in allTargets:
@@ -53,6 +47,9 @@ func detectEnemies() -> void:
 		if distanceFromCenter < closest_distance:
 			closest_distance = distanceFromCenter
 			target = targetA
+			if hacking:
+				hackMenu()
+			
 			
 	for targetA in allTargets:
 		var tLabel := Label.new()
@@ -74,12 +71,13 @@ func hackMenu() -> void:
 	for label in HHacks.get_children():
 		HHacks.remove_child(label)
 		label.queue_free()
-		
-	for dataHack in target.dataHacks:
-		var PanelInst := HackPanel.instantiate()
-		HHacks.add_child(PanelInst)
-		PanelInst.myhack = dataHack
-		PanelInst.text = h.getName(dataHack)
+	
+	if target:
+		for dataHack in target.dataHacks:
+			var PanelInst := HackPanel.instantiate()
+			HHacks.add_child(PanelInst)
+			PanelInst.myhack = dataHack
+			PanelInst.text = h.getName(dataHack)
 	
 	if focused_index > HHacks.get_child_count() - 1:
 		focused_index = 0
@@ -92,8 +90,8 @@ func hackMenu() -> void:
 
 func _process(delta: float) -> void:
 	detectEnemies()
-	if target and hacking:
-		hackMenu()
+	#if target and hacking:
+		#hackMenu()
 	if hacking == true:
 		Engine.time_scale = move_toward(Engine.time_scale, 0.3, 0.02)
 	else:
@@ -108,18 +106,18 @@ func _process(delta: float) -> void:
 
 func _on_enemy_detection_body_entered(body: Node3D) -> void:
 	validEnemies.append(body)
-	print("new list:")
-	for enemy in validEnemies:
-		print(enemy.name)
+	#print("new list:")
+	#for enemy in validEnemies:
+		#print(enemy.name)
 
 func _on_enemy_detection_body_exited(body: Node3D) -> void:
 	validEnemies.erase(body)
 	allTargets.erase(body)
 	if body == target:
 		target = null
-	print("new list:")
-	for enemy in validEnemies:
-		print(enemy.name)
+	#print("new list:")
+	#for enemy in validEnemies:
+		#print(enemy.name)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("scrollDown"):
@@ -129,6 +127,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("hack"):
 		hacking = true
+		hackMenu()
 
 	elif event.is_action_released("hack"):
 		if HHacks.get_child_count() > 0:
